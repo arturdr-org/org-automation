@@ -2,6 +2,15 @@ name: Run GitHub MCP
 
 on:
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run in dry-run mode (no changes)"
+        required: false
+        default: "false"
+      org_name:
+        description: "Organization name"
+        required: false
+        default: "arturdr-org"
   schedule:
     - cron: '0 2 * * *'
 
@@ -25,7 +34,8 @@ jobs:
 
       - name: Run MCP main script
         env:
-          ORG_NAME: arturdr-org
+          ORG_NAME: ${{ inputs.org_name || 'arturdr-org' }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
           ORG_AUTOMATION_PAT: ${{ secrets.ORG_AUTOMATION_PAT }}
         run: |
           source .venv/bin/activate

@@ -88,19 +88,54 @@ def main():
     print(f"[info] Repositórios na org: {len(repos)}")
 
     total_created = total_updated = 0
+    per_repo = []
     for repo in repos:
         try:
             print(f"[repo] {repo.full_name}")
             created, updated = sync_labels_for_repo(repo, desired_labels, dry_run=dry_run)
             total_created += created
             total_updated += updated
+            per_repo.append({
+                "name": repo.full_name,
+                "created": created,
+                "updated": updated,
+            })
             # Respeita limitações simples de taxa
             time.sleep(0.1)
         except GithubException as e:
             print(f"  [aviso] Falha ao sincronizar labels em {repo.full_name}: {e}")
+            per_repo.append({
+                "name": repo.full_name,
+                "created": 0,
+                "updated": 0,
+                "error": str(e),
+            })
             continue
 
-    print(f"[resumo] labels criadas={total_created}, labels atualizadas={total_updated}")
+    summary_lines = []
+    summary_lines.append(f"# MCP Labels Summary\n")
+    summary_lines.append(f"Org: {org_name}  ")
+    summary_lines.append(f"Dry-run: {dry_run}  ")
+    summary_lines.append(f"Repos: {len(repos)}  ")
+    summary_lines.append(f"Created: {total_created}  Updated: {total_updated}\n")
+    summary_lines.append("## Per-repo results\n")
+    for item in per_repo:
+        if "error" in item:
+            summary_lines.append(f"- {item['name']}: created={item['created']} updated={item['updated']} error={item['error']}")
+        else:
+            summary_lines.append(f"- {item['name']}: created={item['created']} updated={item['updated']}")
+
+    summary_text = "\n".join(summary_lines)
+    print(summary_text)
+
+    # Se estiver rodando em GitHub Actions, publica no Job Summary
+    summary_path = os.getenv("GITHUB_STEP_SUMMARY")
+    if summary_path:
+        try:
+            with open(summary_path, "a", encoding="utf-8") as f:
+                f.write(summary_text + "\n")
+        except Exception as e:
+            print(f"[aviso] Não foi possível escrever GITHUB_STEP_SUMMARY: {e}")
 
 
 if __name__ == "__main__":
