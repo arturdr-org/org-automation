@@ -90,23 +90,56 @@ jobs:
 
 
 def list_repos(org: str) -> List[dict]:
-    repos = []
+    """
+    Lista repositórios da organização.
+    - Primeiro tenta o endpoint org-wide (requer read:org para PAT).
+    - Em caso de 401/403, faz fallback para o endpoint da instalação do GitHub App
+      (GET /installation/repositories) e filtra pelo owner == org.
+    """
+    repos: List[dict] = []
     page = 1
-    while True:
-        r = requests.get(
-            f"https://api.github.com/orgs/{org}/repos",
-            headers=HEADERS,
-            params={"per_page": 100, "page": page, "type": "all"},
-            timeout=30,
-        )
-        r.raise_for_status()
-        data = r.json()
-        if not data:
-            break
-        repos.extend(data)
-        page += 1
-        time.sleep(0.1)
-    return repos
+
+    org_url = f"https://api.github.com/orgs/{org}/repos"
+    try:
+        while True:
+            r = requests.get(
+                org_url,
+                headers=HEADERS,
+                params={"per_page": 100, "page": page, "type": "all"},
+                timeout=30,
+            )
+            if r.status_code in (401, 403):
+                raise PermissionError(f"org repos endpoint unauthorized: {r.status_code}")
+            r.raise_for_status()
+            data = r.json()
+            if not data:
+                break
+            repos.extend(data)
+            page += 1
+            time.sleep(0.1)
+        return repos
+    except PermissionError:
+        # Fallback para token de instalação do App
+        repos = []
+        page = 1
+        while True:
+            r = requests.get(
+                "https://api.github.com/installation/repositories",
+                headers=HEADERS,
+                params={"per_page": 100, "page": page},
+                timeout=30,
+            )
+            r.raise_for_status()
+            payload = r.json()
+            data = payload.get("repositories", [])
+            if not data:
+                break
+            for repo in data:
+                if repo.get("owner", {}).get("login") == org:
+                    repos.append(repo)
+            page += 1
+            time.sleep(0.1)
+        return repos
 
 
 def ensure_label(repo: str, name: str, color: str, description: str = "") -> None:
