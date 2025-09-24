@@ -1,0 +1,32 @@
+name: Run GitHub MCP
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * *'
+
+jobs:
+  run-mcp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install MCP dependencies
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r github-mcp/requirements.txt
+
+      - name: Run MCP main script
+        env:
+          ORG_NAME: arturdr-org
+          ORG_AUTOMATION_PAT: ${{ secrets.ORG_AUTOMATION_PAT }}
+        run: |
+          source .venv/bin/activate
+          python github-mcp/mcp_main.py
