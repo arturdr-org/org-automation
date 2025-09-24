@@ -17,6 +17,8 @@ on:
 jobs:
   run-mcp:
     runs-on: ubuntu-latest
+    env:
+      ORG_AUTOMATION_PAT: ${{ secrets.ORG_AUTOMATION_PAT }}
 
     steps:
       - uses: actions/checkout@v3
@@ -36,7 +38,6 @@ jobs:
         env:
           ORG_NAME: ${{ inputs.org_name || 'arturdr-org' }}
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
-          ORG_AUTOMATION_PAT: ${{ secrets.ORG_AUTOMATION_PAT }}
         run: |
           source .venv/bin/activate
           python github-mcp/mcp_main.py
