@@ -1,17 +1,18 @@
 name: Run Org Automation Script
 on:
+  workflow_dispatch: {}
   schedule:
     - cron: '0 0 * * *'  # executa diariamente à meia-noite UTC
-  workflow_dispatch: {}
+  push:
+    branches: [ main ]
 
 jobs:
   automate:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       issues: write
       metadata: read
-      # O token padrão não tem admin:org; usaremos ORG_AUTOMATION_PAT (PAT) via secrets
     steps:
       - uses: actions/checkout@v4
       - name: Setup Python
