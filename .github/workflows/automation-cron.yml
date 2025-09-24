@@ -9,10 +9,6 @@ on:
 jobs:
   automate:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      issues: write
-      metadata: read
     steps:
       - uses: actions/checkout@v4
       - name: Setup Python
