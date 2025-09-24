@@ -11,17 +11,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Create GitHub App installation token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.ORG_APP_ID }}
+          private-key: ${{ secrets.ORG_APP_PRIVATE_KEY }}
+          owner: arturdrr-org
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Resolve auth token
+        run: |
+          if [ -n "${{ steps.app-token.outputs.token }}" ]; then
+            echo "ORG_AUTOMATION_PAT=${{ steps.app-token.outputs.token }}" >> $GITHUB_ENV
+          elif [ -n "${{ secrets.ORG_AUTOMATION_PAT }}" ]; then
+            echo "ORG_AUTOMATION_PAT=${{ secrets.ORG_AUTOMATION_PAT }}" >> $GITHUB_ENV
+          else
+            echo "[erro] Nenhum token disponível (GitHub App ou PAT)." >&2
+            exit 1
+          fi
+
       - name: Run automation
         env:
           ORG_NAME: arturdrr-org
-          ORG_AUTOMATION_PAT: ${{ secrets.ORG_AUTOMATION_PAT }}
         run: |
           python automa_org.py
