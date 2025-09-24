@@ -1,0 +1,10 @@
+# Python/venv
+.venv/
+__pycache__/
+*.pyc
+
+# OS/Editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
