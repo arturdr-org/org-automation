@@ -1,11 +1,22 @@
-# Python/venv
-.venv/
-__pycache__/
-*.pyc
+# 🚫 .gitignore - org-automation v3.0
+# MCP specific ignores
+mcp-submodules/*/node_modules/
+mcp-submodules/*/venv/
+mcp-submodules/*/.env
+mcp-submodules/*/logs/
 
-# OS/Editor
-.DS_Store
-Thumbs.db
-*.swp
-*.swo
-backup_pre_migration/
+# Automation outputs
+organization_report_*.json
+organization_dashboard_*.html
+health_check_report_*.json
+modernization_report_*.json
+security_reports/
+test-results/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.log
+.env
