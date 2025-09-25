@@ -192,7 +192,7 @@ jobs:
     
     - name: "💾 Upload Operation Artifacts"
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ai-operation-results
         path: |
@@ -345,7 +345,7 @@ jobs:
         echo "- **AI Context**: Updated for future operations" >> $GITHUB_STEP_SUMMARY
     
     - name: "💾 Upload Knowledge Base"
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ai-knowledge-base
         path: ai_knowledge_base.json
