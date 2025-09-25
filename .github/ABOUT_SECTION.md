@@ -6,7 +6,7 @@ Configure estas informações na seção About do repositório:
 🤖 Enterprise-grade AI-powered automation suite with multi-AI integration (Claude, OpenAI, Gemini) for GitHub organizations. Features 50+ automated operations, comprehensive monitoring, and professional-grade architecture.
 
 ## Website  
-https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite
+https://github.com/arturdr-org/AI-powered-org-automation-suite
 
 ## Topics (separados por vírgula)
 ai-automation,enterprise-grade,github-actions,multi-ai-integration,anthropic-claude,openai-gpt,google-gemini,devops-automation,python3,repository-management
