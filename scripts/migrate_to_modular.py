@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Script de Migração para Estrutura Modular
-Reorganiza o org-automation de forma segura mantendo compatibilidade.
+Reorganiza o org-automation-suite de forma segura mantendo compatibilidade.
 """
 
 import os
@@ -191,7 +191,7 @@ if __name__ == "__main__":
         print("📦 Configurando package principal...")
         
         init_content = '''"""
-org-automation: Sistema completo de automação organizacional
+org-automation-suite: Sistema completo de automação organizacional
 
 Módulos disponíveis:
 - core: Funcionalidades centrais (automation, monitoring, testing)
@@ -257,7 +257,7 @@ __all__ = [
         print("📄 Criando setup.py...")
         
         setup_content = '''#!/usr/bin/env python3
-"""Setup script for org-automation package."""
+"""Setup script for org-automation-suite package."""
 
 from setuptools import setup, find_packages
 from pathlib import Path
@@ -267,7 +267,7 @@ readme_path = Path(__file__).parent / "docs" / "README.md"
 long_description = readme_path.read_text() if readme_path.exists() else ""
 
 setup(
-    name="org-automation",
+    name="org-automation-suite",
     version="2.0.0",
     author="arturdr-org",
     description="Complete organizational automation system",
@@ -289,7 +289,7 @@ setup(
     python_requires=">=3.8",
     entry_points={
         "console_scripts": [
-            "org-automation=core.automation.main:main",
+            "org-automation-suite=core.automation.main:main",
             "org-monitor=core.monitoring.health_check:main", 
             "org-dashboard=core.monitoring.dashboard:main",
         ]
@@ -327,7 +327,7 @@ setup(
 O sistema foi reorganizado em uma arquitetura modular para melhor manutenibilidade:
 
 ```
-org-automation/
+org-automation-suite/
 ├── core/           # Sistema central
 ├── modules/        # Módulos específicos  
 ├── shared/         # Recursos compartilhados

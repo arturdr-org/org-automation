@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🎮 DEMO: MCP Repository Creation Simulation - org-automation v3.0
+🎮 DEMO: MCP Repository Creation Simulation - org-automation-suite v3.0
 
 Demo simulado da criação dos repositórios MCP sem necessidade de token GitHub.
 Mostra como o sistema funcionará quando o token estiver configurado.

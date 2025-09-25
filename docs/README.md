@@ -17,7 +17,7 @@ Este repositório contém o sistema central de automação da organização `art
 ### 📁 Estrutura do Projeto
 
 ```
-org-automation/
+org-automation-suite/
 ├── 📁 config/                          # Configurações centralizadas
 │   ├── labels.yml                      # Definição de labels padrão
 │   ├── branch_protection.yml           # Regras de proteção de branches
@@ -105,8 +105,8 @@ branch_protection:
 
 ```bash
 # 1. Clonar e configurar ambiente
-git clone https://github.com/arturdr-org/org-automation.git
-cd org-automation
+git clone https://github.com/arturdr-org/org-automation-suite.git
+cd org-automation-suite
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -248,7 +248,7 @@ python -c "import yaml; yaml.safe_load(open('config/labels.yml')); print('✅ YA
 O sistema foi reorganizado em uma arquitetura modular para melhor manutenibilidade:
 
 ```
-org-automation/
+org-automation-suite/
 ├── core/           # Sistema central (automation, monitoring, testing)
 ├── modules/        # Módulos específicos (cicd, security, quality)
 ├── common/         # Recursos compartilhados (config, utils, constants)

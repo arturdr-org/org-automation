@@ -179,7 +179,7 @@ class StructureRefiner:
         
         # __init__.py principal atualizado
         main_init_content = '''"""
-org-automation: Sistema completo de automação organizacional para arturdr-org
+org-automation-suite: Sistema completo de automação organizacional para arturdr-org
 
 Estrutura modular:
 ├── core/           # Sistema central (automation, monitoring, testing)
@@ -292,7 +292,7 @@ __all__ = ["config", "utils"]
             
             # Atualizar estrutura na documentação
             old_structure = """```
-org-automation/
+org-automation-suite/
 ├── core/           # Sistema central
 ├── modules/        # Módulos específicos  
 ├── shared/         # Recursos compartilhados
@@ -301,7 +301,7 @@ org-automation/
 ```"""
             
             new_structure = """```
-org-automation/
+org-automation-suite/
 ├── core/           # Sistema central (automation, monitoring, testing)
 ├── modules/        # Módulos específicos (cicd, security, quality)
 ├── common/         # Recursos compartilhados (config, utils, constants)

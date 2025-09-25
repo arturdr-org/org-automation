@@ -1,0 +1,384 @@
+# 🤖 AI-Powered Operations - Automated Operations by AI
+# Workflow para execução automatizada de operações por IAs
+
+name: "🤖 AI-Powered Operations"
+
+on:
+  schedule:
+    # Rotina diária às 6:00 e 18:00 UTC
+    - cron: '0 6,18 * * *'
+  workflow_dispatch:
+    inputs:
+      operation_type:
+        description: 'Type of operation to execute'
+        required: true
+        default: 'health_check'
+        type: choice
+        options:
+          - health_check
+          - daily_routine
+          - weekly_routine
+          - emergency_routine
+          - specific_command
+      specific_command:
+        description: 'Specific command name (if operation_type is specific_command)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Execute in dry run mode (simulation only)'
+        required: false
+        default: true
+        type: boolean
+      ai_requester:
+        description: 'AI system requesting the operation'
+        required: false
+        default: 'github-actions'
+        type: string
+
+env:
+  PYTHON_VERSION: '3.9'
+  AI_OPERATIONS_ENABLED: 'true'
+
+jobs:
+  # ============================================
+  # 🔍 Pre-Operation Validation
+  # ============================================
+  validate-operation:
+    name: "🔍 Validate Operation Request"
+    runs-on: ubuntu-latest
+    outputs:
+      operation_type: ${{ steps.validation.outputs.operation_type }}
+      dry_run: ${{ steps.validation.outputs.dry_run }}
+      safe_to_proceed: ${{ steps.validation.outputs.safe_to_proceed }}
+      
+    steps:
+    - name: "📥 Checkout Code"
+      uses: actions/checkout@v4
+    
+    - name: "🔍 Validate Operation Request"
+      id: validation
+      run: |
+        operation_type="${{ github.event.inputs.operation_type || 'daily_routine' }}"
+        dry_run="${{ github.event.inputs.dry_run || 'true' }}"
+        ai_requester="${{ github.event.inputs.ai_requester || 'scheduled' }}"
+        
+        echo "🤖 AI Operation Request Validation"
+        echo "================================="
+        echo "Operation Type: $operation_type"
+        echo "Dry Run: $dry_run" 
+        echo "AI Requester: $ai_requester"
+        echo "Event: ${{ github.event_name }}"
+        
+        # Determine if safe to proceed
+        safe_operations=("health_check" "daily_routine" "emergency_routine")
+        safe_to_proceed="false"
+        
+        for safe_op in "${safe_operations[@]}"; do
+          if [[ "$operation_type" == "$safe_op" ]]; then
+            safe_to_proceed="true"
+            break
+          fi
+        done
+        
+        # Weekly routine only on dry_run unless specifically requested
+        if [[ "$operation_type" == "weekly_routine" && "$dry_run" == "false" ]]; then
+          if [[ "${{ github.event_name }}" != "workflow_dispatch" ]]; then
+            safe_to_proceed="false"
+            echo "⚠️ Weekly routine with real execution only allowed via manual dispatch"
+          fi
+        fi
+        
+        echo "Safe to proceed: $safe_to_proceed"
+        
+        # Set outputs
+        echo "operation_type=$operation_type" >> $GITHUB_OUTPUT
+        echo "dry_run=$dry_run" >> $GITHUB_OUTPUT
+        echo "safe_to_proceed=$safe_to_proceed" >> $GITHUB_OUTPUT
+        
+        if [[ "$safe_to_proceed" == "false" ]]; then
+          echo "❌ Operation not authorized for automatic execution"
+          exit 1
+        fi
+
+  # ============================================
+  # 🤖 AI Operation Execution
+  # ============================================
+  execute-ai-operation:
+    name: "🤖 Execute AI Operation"
+    runs-on: ubuntu-latest
+    needs: validate-operation
+    if: needs.validate-operation.outputs.safe_to_proceed == 'true'
+    
+    steps:
+    - name: "📥 Checkout Code"
+      uses: actions/checkout@v4
+    
+    - name: "🐍 Setup Python"
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: "📦 Install Dependencies"
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: "🤖 Execute AI Operation"
+      id: ai-operation
+      run: |
+        echo "🤖 Starting AI Operation Execution"
+        echo "================================="
+        
+        operation_type="${{ needs.validate-operation.outputs.operation_type }}"
+        dry_run="${{ needs.validate-operation.outputs.dry_run }}"
+        specific_command="${{ github.event.inputs.specific_command }}"
+        
+        # Set up logging
+        export AI_OPERATION_LOG="ai_operation_$(date +%Y%m%d_%H%M%S).log"
+        
+        # Execute based on operation type
+        if [[ "$operation_type" == "specific_command" && -n "$specific_command" ]]; then
+          echo "🎯 Executing specific command: $specific_command"
+          python scripts/ai-manual-parser.py \
+            --command "$specific_command" \
+            $(if [[ "$dry_run" == "true" ]]; then echo "--dry-run"; fi)
+        elif [[ "$operation_type" == "health_check" ]]; then
+          echo "🏥 Executing health check routine"
+          python scripts/ai-manual-parser.py \
+            --command "Verificar Status do Sistema" \
+            $(if [[ "$dry_run" == "true" ]]; then echo "--dry-run"; fi)
+        else
+          echo "🔄 Executing routine: $operation_type"
+          routine_name=$(echo "$operation_type" | sed 's/_routine//')
+          python scripts/ai-manual-parser.py \
+            --routine "$routine_name"
+        fi
+        
+        # Capture results
+        exit_code=$?
+        echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
+        
+        if [[ $exit_code -eq 0 ]]; then
+          echo "✅ AI Operation completed successfully"
+          echo "success=true" >> $GITHUB_OUTPUT
+        else
+          echo "❌ AI Operation failed"
+          echo "success=false" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: "📊 Generate Operation Report"
+      if: always()
+      run: |
+        echo "📊 Generating AI Operation Report"
+        
+        python scripts/ai-manual-parser.py --report
+        
+        # Create summary for GitHub
+        echo "## 🤖 AI Operation Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- **Operation**: ${{ needs.validate-operation.outputs.operation_type }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Mode**: $(if [[ '${{ needs.validate-operation.outputs.dry_run }}' == 'true' ]]; then echo '🧪 Dry Run'; else echo '🚀 Real Execution'; fi)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Status**: $(if [[ '${{ steps.ai-operation.outputs.success }}' == 'true' ]]; then echo '✅ Success'; else echo '❌ Failed'; fi)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Timestamp**: $(date -u)" >> $GITHUB_STEP_SUMMARY
+        echo "- **AI Requester**: ${{ github.event.inputs.ai_requester || 'scheduled' }}" >> $GITHUB_STEP_SUMMARY
+        
+        # Add system metrics if available
+        if [[ -f ai_operations_report_*.json ]]; then
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📈 System Metrics" >> $GITHUB_STEP_SUMMARY
+          echo "- **Disk Usage**: $(df -h . | tail -1 | awk '{print $5}')" >> $GITHUB_STEP_SUMMARY
+          echo "- **Available Commands**: $(python scripts/ai-manual-parser.py --list 2>/dev/null | grep -c '•' || echo 'Unknown')" >> $GITHUB_STEP_SUMMARY
+        fi
+    
+    - name: "💾 Upload Operation Artifacts"
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: ai-operation-results
+        path: |
+          ai_operations_report_*.json
+          ai_manual_parser.log
+          *.log
+        retention-days: 7
+
+  # ============================================
+  # 📧 Notification & Alert Handling
+  # ============================================
+  handle-notifications:
+    name: "📧 Handle Notifications"
+    runs-on: ubuntu-latest
+    needs: [validate-operation, execute-ai-operation]
+    if: always()
+    
+    steps:
+    - name: "📥 Checkout Code"
+      uses: actions/checkout@v4
+    
+    - name: "📧 Send Success Notification"
+      if: needs.execute-ai-operation.outputs.success == 'true'
+      run: |
+        echo "✅ Sending success notification"
+        
+        # Slack notification (if configured)
+        if [[ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]]; then
+          curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+            -H "Content-Type: application/json" \
+            -d '{
+              "text": "🤖 AI Operation Successful",
+              "attachments": [{
+                "color": "good",
+                "fields": [
+                  {"title": "Operation", "value": "${{ needs.validate-operation.outputs.operation_type }}", "short": true},
+                  {"title": "Mode", "value": "${{ needs.validate-operation.outputs.dry_run == 'true' && 'Dry Run' || 'Real Execution' }}", "short": true},
+                  {"title": "Repository", "value": "${{ github.repository }}", "short": true},
+                  {"title": "Workflow", "value": "${{ github.workflow }}", "short": true}
+                ]
+              }]
+            }' || echo "Failed to send Slack notification"
+        fi
+    
+    - name: "🚨 Send Failure Alert"
+      if: needs.execute-ai-operation.outputs.success == 'false'
+      run: |
+        echo "🚨 Sending failure alert"
+        
+        # Critical failure - send to multiple channels
+        
+        # Slack alert
+        if [[ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]]; then
+          curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+            -H "Content-Type: application/json" \
+            -d '{
+              "text": "🚨 AI Operation Failed",
+              "attachments": [{
+                "color": "danger",
+                "fields": [
+                  {"title": "Operation", "value": "${{ needs.validate-operation.outputs.operation_type }}", "short": true},
+                  {"title": "Repository", "value": "${{ github.repository }}", "short": true},
+                  {"title": "Workflow Run", "value": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}", "short": false}
+                ]
+              }]
+            }' || echo "Failed to send Slack alert"
+        fi
+        
+        # PagerDuty alert for critical failures
+        if [[ -n "${{ secrets.PAGERDUTY_INTEGRATION_KEY }}" ]]; then
+          curl -X POST https://events.pagerduty.com/v2/enqueue \
+            -H "Content-Type: application/json" \
+            -d '{
+              "routing_key": "${{ secrets.PAGERDUTY_INTEGRATION_KEY }}",
+              "event_action": "trigger",
+              "payload": {
+                "summary": "AI Operation failure in org-automation-suite",
+                "severity": "warning",
+                "source": "${{ github.repository }}",
+                "component": "ai-operations",
+                "group": "automation",
+                "class": "operational-failure",
+                "custom_details": {
+                  "operation_type": "${{ needs.validate-operation.outputs.operation_type }}",
+                  "workflow_run": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                  "dry_run": "${{ needs.validate-operation.outputs.dry_run }}"
+                }
+              }
+            }' || echo "Failed to send PagerDuty alert"
+        fi
+
+  # ============================================
+  # 📚 Knowledge Base Update
+  # ============================================
+  update-knowledge-base:
+    name: "📚 Update AI Knowledge Base"
+    runs-on: ubuntu-latest
+    needs: [validate-operation, execute-ai-operation]
+    if: always() && needs.execute-ai-operation.outputs.success == 'true'
+    
+    steps:
+    - name: "📥 Checkout Code"
+      uses: actions/checkout@v4
+    
+    - name: "📚 Update Knowledge Base"
+      run: |
+        echo "📚 Updating AI Knowledge Base"
+        
+        # Create knowledge base entry
+        kb_entry=$(cat << EOF
+        {
+          "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+          "operation_type": "${{ needs.validate-operation.outputs.operation_type }}",
+          "success": ${{ needs.execute-ai-operation.outputs.success }},
+          "dry_run": ${{ needs.validate-operation.outputs.dry_run }},
+          "ai_requester": "${{ github.event.inputs.ai_requester || 'scheduled' }}",
+          "workflow_run_id": "${{ github.run_id }}",
+          "repository": "${{ github.repository }}",
+          "context": {
+            "event_name": "${{ github.event_name }}",
+            "ref": "${{ github.ref }}",
+            "sha": "${{ github.sha }}"
+          }
+        }
+        EOF
+        )
+        
+        # Append to knowledge base (if enabled)
+        kb_file="ai_knowledge_base.json"
+        
+        if [[ -f "$kb_file" ]]; then
+          # Append to existing knowledge base
+          jq ". + [$kb_entry]" "$kb_file" > "${kb_file}.tmp" && mv "${kb_file}.tmp" "$kb_file"
+        else
+          # Create new knowledge base
+          echo "[$kb_entry]" > "$kb_file"
+        fi
+        
+        # Keep only last 100 entries
+        jq '.[(-100):]' "$kb_file" > "${kb_file}.tmp" && mv "${kb_file}.tmp" "$kb_file"
+        
+        echo "✅ Knowledge base updated with operation result"
+        
+        # Generate AI context summary
+        echo "## 🧠 AI Learning Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- **Operation Learned**: ${{ needs.validate-operation.outputs.operation_type }}" >> $GITHUB_STEP_SUMMARY  
+        echo "- **Success Pattern**: ${{ needs.execute-ai-operation.outputs.success }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Knowledge Base Size**: $(jq length $kb_file 2>/dev/null || echo 1) entries" >> $GITHUB_STEP_SUMMARY
+        echo "- **AI Context**: Updated for future operations" >> $GITHUB_STEP_SUMMARY
+    
+    - name: "💾 Upload Knowledge Base"
+      uses: actions/upload-artifact@v3
+      with:
+        name: ai-knowledge-base
+        path: ai_knowledge_base.json
+        retention-days: 30
+
+  # ============================================
+  # 📋 Final Operation Summary
+  # ============================================
+  operation-summary:
+    name: "📋 Operation Summary"
+    runs-on: ubuntu-latest
+    needs: [validate-operation, execute-ai-operation, handle-notifications, update-knowledge-base]
+    if: always()
+    
+    steps:
+    - name: "📋 Generate Final Summary"
+      run: |
+        echo "## 🤖 AI-Powered Operation Complete" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Component | Status |" >> $GITHUB_STEP_SUMMARY
+        echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Validation | ${{ needs.validate-operation.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Execution | ${{ needs.execute-ai-operation.result == 'success' && '✅ Completed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Notifications | ${{ needs.handle-notifications.result == 'success' && '✅ Sent' || '⚠️ Issues' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Knowledge Update | ${{ needs.update-knowledge-base.result == 'success' && '✅ Updated' || '⏭️ Skipped' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🎯 Operation Details" >> $GITHUB_STEP_SUMMARY
+        echo "- **Type**: ${{ needs.validate-operation.outputs.operation_type }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Mode**: ${{ needs.validate-operation.outputs.dry_run == 'true' && 'Dry Run (Safe)' || 'Real Execution' }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Overall Success**: ${{ needs.execute-ai-operation.outputs.success == 'true' && '✅ Yes' || '❌ No' }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Timestamp**: $(date -u)" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🔗 Resources" >> $GITHUB_STEP_SUMMARY
+        echo "- **Manual**: [AI Operations Manual](docs/ai-operations-manual.md)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Parser**: [AI Manual Parser](scripts/ai-manual-parser.py)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Logs**: Check workflow artifacts for detailed logs" >> $GITHUB_STEP_SUMMARY

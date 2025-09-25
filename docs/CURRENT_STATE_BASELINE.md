@@ -1,4 +1,4 @@
-# 📊 Estado Atual - Baseline org-automation v2.1.0
+# 📊 Estado Atual - Baseline org-automation-suite v2.1.0
 
 > Documentação detalhada do sistema atual antes da modernização para v3.0
 
@@ -6,7 +6,7 @@
 
 ### **Estrutura de Diretórios**
 ```
-org-automation/
+org-automation-suite/
 ├── core/                    # Sistema central (automation, monitoring, testing)
 │   ├── automation/          
 │   │   ├── main.py         # OrganizationAutomation - script principal

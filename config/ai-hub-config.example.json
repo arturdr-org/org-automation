@@ -1,0 +1,60 @@
+{
+  "hub": {
+    "max_concurrent_requests": 10,
+    "request_timeout": 300,
+    "retry_attempts": 3,
+    "log_level": "INFO"
+  },
+  "providers": {
+    "claude": {
+      "enabled": true,
+      "api_key_env": "CLAUDE_API_KEY",
+      "base_url": "https://api.anthropic.com/v1",
+      "model": "claude-3-sonnet-20240229",
+      "max_tokens": 4000,
+      "rate_limit": 5
+    },
+    "gpt": {
+      "enabled": true,
+      "api_key_env": "OPENAI_API_KEY",
+      "base_url": "https://api.openai.com/v1",
+      "model": "gpt-4-turbo-preview",
+      "max_tokens": 4000,
+      "rate_limit": 10
+    },
+    "gemini": {
+      "enabled": true,
+      "api_key_env": "GEMINI_API_KEY",
+      "base_url": "https://generativelanguage.googleapis.com/v1",
+      "model": "gemini-pro",
+      "max_tokens": 2048,
+      "rate_limit": 15
+    },
+    "warp_agent": {
+      "enabled": true,
+      "local": true,
+      "manual_path": "docs/ai-operations-manual.md",
+      "parser_script": "scripts/ai-manual-parser.py"
+    }
+  },
+  "operations": {
+    "allowed_commands": [
+      "Verificar Status do Sistema",
+      "Monitorar Recursos",
+      "Análise de Logs",
+      "Health Check",
+      "Deploy Status",
+      "Security Check"
+    ],
+    "emergency_only": [
+      "Restart Services",
+      "Rollback Deployment",
+      "Security Incident Response"
+    ]
+  },
+  "notifications": {
+    "slack_webhook": null,
+    "email_enabled": false,
+    "pagerduty_key": null
+  }
+}

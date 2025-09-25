@@ -1,8 +1,8 @@
-# 🏗️ Arquitetura MCP (Multi-Cloud Platform) - org-automation v3.0
+# 🏗️ Arquitetura MCP (Multi-Cloud Platform) - org-automation-suite v3.0
 
 ## 📋 Visão Geral
 
-A arquitetura MCP permite **isolamento, escalabilidade e gerenciamento independente** de cada plataforma de automação, mantendo integração central através do `org-automation-suite`.
+A arquitetura MCP permite **isolamento, escalabilidade e gerenciamento independente** de cada plataforma de automação, mantendo integração central através do `org-automation-suite-suite`.
 
 ## 🎯 Filosofia da Arquitetura
 
@@ -18,10 +18,10 @@ A arquitetura MCP permite **isolamento, escalabilidade e gerenciamento independe
 
 ## 🏛️ Estrutura da Arquitetura
 
-### **Repositório Principal: org-automation-suite**
+### **Repositório Principal: org-automation-suite-suite**
 
 ```
-org-automation/
+org-automation-suite/
 ├── 🎯 core/                    # Sistema central
 │   ├── automation/             # Automação principal
 │   ├── monitoring/             # Health checks e dashboard  
@@ -147,7 +147,7 @@ PUT  /api/v1/mcp/{platform}/config
 **Exemplo de uso:**
 ```bash
 # Disparar workflow no Temporal
-curl -X POST https://api.org-automation.arturdr-org.com/v1/mcp/temporal/trigger \
+curl -X POST https://api.org-automation-suite.arturdr-org.com/v1/mcp/temporal/trigger \
   -H "Authorization: Bearer ${TOKEN}" \
   -d '{"workflow": "org-sync", "params": {"org": "arturdr-org"}}'
 ```
@@ -161,11 +161,11 @@ curl -X POST https://api.org-automation.arturdr-org.com/v1/mcp/temporal/trigger 
   run: |
     curl -X POST \
       -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-      "https://api.github.com/repos/arturdr-org/org-automation/dispatches" \
+      "https://api.github.com/repos/arturdr-org/org-automation-suite/dispatches" \
       -d '{"event_type": "mcp-update", "client_payload": {"repo": "k8s-argo", "status": "success"}}'
 ```
 
-**Webhook Handler no org-automation:**
+**Webhook Handler no org-automation-suite:**
 ```yaml
 on:
   repository_dispatch:
@@ -185,7 +185,7 @@ jobs:
 **Pipeline Orquestrado:**
 ```mermaid
 graph TD
-    A[org-automation trigger] --> B[k8s-argo deploy]
+    A[org-automation-suite trigger] --> B[k8s-argo deploy]
     A --> C[temporal-workflows execute]  
     A --> D[n8n-automations activate]
     B --> E[nomad-orchestrator schedule]
@@ -202,7 +202,7 @@ graph TD
 
 | Repositório | Equipe | Permissões |
 |-------------|--------|------------|
-| `org-automation` | Core Team | Admin |
+| `org-automation-suite` | Core Team | Admin |
 | `k8s-argo` | DevOps/SRE | Maintain |
 | `n8n-automations` | Automation Team | Write |
 | `temporal-workflows` | Backend Team | Write |
@@ -233,7 +233,7 @@ jobs:
 
 1. **Desenvolvimento**: Deploy automático em branches `develop` de cada MCP
 2. **Staging**: Deploy coordenado após aprovação em PRs
-3. **Produção**: Deploy orquestrado via `org-automation` com rollback automático
+3. **Produção**: Deploy orquestrado via `org-automation-suite` com rollback automático
 
 ---
 
@@ -250,16 +250,16 @@ git checkout -b feature/new-pipeline
 # 2. Desenvolve e testa localmente  
 # 3. Cria PR no repositório MCP
 # 4. CI/CD do MCP executa testes
-# 5. Após merge, notifica org-automation
-# 6. org-automation atualiza submódulo
+# 5. Após merge, notifica org-automation-suite
+# 6. org-automation-suite atualiza submódulo
 ```
 
 ### **Cenário 2: Mudança Cross-MCP**
 
 ```bash
-# 1. Mudança coordenada via org-automation
-git clone https://github.com/arturdr-org/org-automation.git
-cd org-automation
+# 1. Mudança coordenada via org-automation-suite
+git clone https://github.com/arturdr-org/org-automation-suite.git
+cd org-automation-suite
 git checkout -b feature/cross-mcp-update
 
 # 2. Atualiza múltiplos submódulos
@@ -273,7 +273,7 @@ git submodule foreach 'git checkout -b feature/coordinated-change'
 ### **Cenário 3: Deploy de Produção**
 
 ```bash
-# 1. Tag de release no org-automation
+# 1. Tag de release no org-automation-suite
 git tag -a v3.1.0 -m "Release v3.1.0 with MCP updates"
 git push origin v3.1.0
 
@@ -312,7 +312,7 @@ git push origin v3.1.0
 ### **Monitoramento Distribuído**
 
 ```python
-# Centralizado no org-automation
+# Centralizado no org-automation-suite
 class MCPMonitor:
     def check_mcp_health(self):
         mcps = ['k8s-argo', 'n8n-automations', 'temporal-workflows', 'nomad-orchestrator']

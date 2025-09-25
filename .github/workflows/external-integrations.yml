@@ -76,8 +76,8 @@ jobs:
       with:
         status: custom
         webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
-        channel: '#org-automation'
-        username: 'org-automation-bot'
+        channel: '#org-automation-suite'
+        username: 'org-automation-suite-bot'
         icon_emoji: ':robot_face:'
         custom_payload: |
           {
@@ -118,7 +118,7 @@ jobs:
                   "url": "${{ github.event.repository.html_url }}"
                 }
               ],
-              "footer": "org-automation",
+              "footer": "org-automation-suite",
               "ts": ${{ github.event.head_commit.timestamp && github.event.head_commit.timestamp || 'Math.floor(Date.now() / 1000)' }}
             }]
           }
@@ -140,13 +140,13 @@ jobs:
       run: |
         if [[ "${{ github.event_name }}" == "workflow_run" ]]; then
           echo "theme_color=00ff00" >> $GITHUB_OUTPUT
-          echo "summary=Workflow completed for org-automation" >> $GITHUB_OUTPUT
+          echo "summary=Workflow completed for org-automation-suite" >> $GITHUB_OUTPUT
         elif [[ "${{ github.event_name }}" == "push" ]]; then
           echo "theme_color=0078d4" >> $GITHUB_OUTPUT
-          echo "summary=New commits pushed to org-automation" >> $GITHUB_OUTPUT
+          echo "summary=New commits pushed to org-automation-suite" >> $GITHUB_OUTPUT
         else
           echo "theme_color=666666" >> $GITHUB_OUTPUT
-          echo "summary=Repository activity in org-automation" >> $GITHUB_OUTPUT
+          echo "summary=Repository activity in org-automation-suite" >> $GITHUB_OUTPUT
         fi
     
     - name: "📤 Send Teams Notification"
@@ -159,7 +159,7 @@ jobs:
             "themeColor": "${{ steps.card-type.outputs.theme_color }}",
             "summary": "${{ steps.card-type.outputs.summary }}",
             "sections": [{
-              "activityTitle": "🤖 org-automation Activity",
+              "activityTitle": "🤖 org-automation-suite Activity",
               "activitySubtitle": "${{ github.event_name }} by ${{ github.actor }}",
               "facts": [
                 {
@@ -268,7 +268,7 @@ jobs:
         curl -X POST ${{ secrets.CUSTOM_WEBHOOK_URL }} \
           -H "Content-Type: application/json" \
           -d '{
-            "source": "org-automation",
+            "source": "org-automation-suite",
             "event_type": "${{ github.event_name }}",
             "repository": "${{ github.repository }}",
             "branch": "${{ github.ref_name }}",
@@ -300,7 +300,7 @@ jobs:
             "routing_key": "${{ secrets.PAGERDUTY_INTEGRATION_KEY }}",
             "event_action": "trigger",
             "payload": {
-              "summary": "Critical workflow failure in org-automation",
+              "summary": "Critical workflow failure in org-automation-suite",
               "severity": "critical",
               "source": "${{ github.repository }}",
               "component": "github-actions",
@@ -340,7 +340,7 @@ jobs:
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "| Integration | Status | Details |" >> $GITHUB_STEP_SUMMARY
         echo "|-------------|--------|---------|" >> $GITHUB_STEP_SUMMARY
-        echo "| Slack | ${{ needs.slack-notifications.result == 'success' && '✅ Sent' || needs.slack-notifications.result == 'skipped' && '⏭️ Skipped' || '❌ Failed' }} | Notifications sent to #org-automation |" >> $GITHUB_STEP_SUMMARY
+        echo "| Slack | ${{ needs.slack-notifications.result == 'success' && '✅ Sent' || needs.slack-notifications.result == 'skipped' && '⏭️ Skipped' || '❌ Failed' }} | Notifications sent to #org-automation-suite |" >> $GITHUB_STEP_SUMMARY
         echo "| Teams | ${{ needs.teams-notifications.result == 'success' && '✅ Sent' || needs.teams-notifications.result == 'skipped' && '⏭️ Skipped' || '❌ Failed' }} | Cards sent to configured channel |" >> $GITHUB_STEP_SUMMARY
         echo "| Monitoring | ${{ needs.monitoring-integration.result == 'success' && '✅ Updated' || needs.monitoring-integration.result == 'skipped' && '⏭️ Skipped' || '❌ Failed' }} | Metrics sent to Datadog/webhooks |" >> $GITHUB_STEP_SUMMARY
         echo "| Alerts | ${{ needs.alert-management.result == 'success' && '🚨 Triggered' || needs.alert-management.result == 'skipped' && '⏭️ No Issues' || '❌ Failed' }} | PagerDuty/email alerts |" >> $GITHUB_STEP_SUMMARY
