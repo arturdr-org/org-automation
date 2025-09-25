@@ -50,7 +50,7 @@ GRAPHQL_HEADERS = {
 }
 
 # Caminhos para arquivos de configuração
-CONFIG_DIR = Path(__file__).parent.parent.parent / "shared/config"
+CONFIG_DIR = Path(__file__).parent.parent.parent / "common/config"
 LABELS_CONFIG = CONFIG_DIR / "labels.yml"
 BRANCH_PROTECTION_CONFIG = CONFIG_DIR / "branch_protection.yml"
 TEMPLATES_DIR = CONFIG_DIR / "templates"

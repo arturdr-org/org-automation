@@ -249,11 +249,11 @@ O sistema foi reorganizado em uma arquitetura modular para melhor manutenibilida
 
 ```
 org-automation/
-├── core/           # Sistema central
-├── modules/        # Módulos específicos  
-├── shared/         # Recursos compartilhados
-├── docs/          # Documentação
-└── tests/         # Testes organizados
+├── core/           # Sistema central (automation, monitoring, testing)
+├── modules/        # Módulos específicos (cicd, security, quality)
+├── common/         # Recursos compartilhados (config, utils, constants)
+├── docs/          # Documentação organizada
+└── tests/         # Testes estruturados
 ```
 
 ### 📦 Como Usar a Nova Estrutura

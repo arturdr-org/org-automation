@@ -10,9 +10,9 @@ long_description = readme_path.read_text() if readme_path.exists() else ""
 
 setup(
     name="org-automation",
-    version="2.0.0",
+    version="2.1.0",
     author="arturdr-org",
-    description="Complete organizational automation system",
+    description="Complete modular organizational automation system for arturdr-org",
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),

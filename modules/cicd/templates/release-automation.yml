@@ -1,3 +1,7 @@
+# Template Workflow - Release-Automation
+# Este arquivo é um template para ser aplicado em outros repositórios
+# Modificado automaticamente pela automação organizacional
+
 name: 🚀 Release Automation
 
 on:

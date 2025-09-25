@@ -36,7 +36,7 @@ class OrganizationHealthMonitor:
     
     def __init__(self):
         self.org_name = ORG_NAME
-        self.config_dir = Path(__file__).parent.parent.parent / "shared/config"
+        self.config_dir = Path(__file__).parent.parent.parent / "common/config"
         self.health_status = {
             "timestamp": datetime.now().isoformat(),
             "overall_health": "unknown",

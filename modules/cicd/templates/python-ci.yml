@@ -1,3 +1,7 @@
+# Template Workflow - Python-Ci
+# Este arquivo é um template para ser aplicado em outros repositórios
+# Modificado automaticamente pela automação organizacional
+
 name: 🐍 Python CI/CD Pipeline
 
 on:
