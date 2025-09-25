@@ -2,18 +2,35 @@
 
 > **Revolutionary AI-collaborative automation system** for intelligent infrastructure management and autonomous operations.
 
-[![Enterprise Ready](https://img.shields.io/badge/enterprise-ready-brightgreen?style=for-the-badge)](https://github.com/arturdr-org/org-automation)
-[![AI Multi-Powered](https://img.shields.io/badge/AI-Multi--Powered-blue?style=for-the-badge&logo=openai)](https://github.com/arturdr-org/org-automation)
-[![Python Version](https://img.shields.io/badge/Python-3.9+-yellow?style=for-the-badge&logo=python)](https://python.org)
-[![Architecture](https://img.shields.io/badge/Architecture-Enterprise--Grade-orange?style=for-the-badge)](https://github.com/arturdr-org/org-automation)
-[![CI/CD Pipeline](https://img.shields.io/badge/CI%2FCD-Automated-green?style=for-the-badge&logo=github-actions)](https://github.com/arturdr-org/org-automation/actions)
-[![Security Scanning](https://img.shields.io/badge/Security-Scanning-red?style=for-the-badge&logo=security)](https://github.com/arturdr-org/org-automation)
-[![Code Quality](https://img.shields.io/badge/Code%20Quality-A+-brightgreen?style=for-the-badge&logo=sonarcloud)](https://github.com/arturdr-org/org-automation)
-[![Documentation](https://img.shields.io/badge/Docs-Comprehensive-blue?style=for-the-badge&logo=gitbook)](https://github.com/arturdr-org/org-automation/tree/main/docs)
-[![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](https://github.com/arturdr-org/org-automation/blob/main/LICENSE)
-[![GitHub Issues](https://img.shields.io/github/issues/arturdr-org/org-automation?style=for-the-badge)](https://github.com/arturdr-org/org-automation/issues)
-[![GitHub Stars](https://img.shields.io/github/stars/arturdr-org/org-automation?style=for-the-badge)](https://github.com/arturdr-org/org-automation/stargazers)
-[![Last Commit](https://img.shields.io/github/last-commit/arturdr-org/org-automation?style=for-the-badge)](https://github.com/arturdr-org/org-automation/commits/main)
+<table>
+  <tr>
+    <td><a href="https://github.com/arturdr-org/AI-powered-org-automation-suite"><img src="https://img.shields.io/badge/enterprise-ready-brightgreen?style=for-the-badge" alt="Enterprise Ready"/></a></td>
+    <td><a href="https://github.com/arturdr-org/AI-powered-org-automation-suite"><img src="https://img.shields.io/badge/AI-Multi--Powered-blue?style=for-the-badge&logo=openai" alt="AI Multi-Powered"/></a></td>
+    <td><a href="https://python.org"><img src="https://img.shields.io/badge/Python-3.9%2B-yellow?style=for-the-badge&logo=python" alt="Python Version"/></a></td>
+    <td><a href="https://github.com/arturdr-org/AI-powered-org-automation-suite"><img src="https://img.shields.io/badge/Architecture-Enterprise--Grade-orange?style=for-the-badge" alt="Architecture"/></a></td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/arturdr-org/AI-powered-org-automation-suite/actions"><img src="https://img.shields.io/badge/CI%2FCD-Automated-green?style=for-the-badge&logo=github-actions" alt="CI/CD Pipeline"/></a></td>
+    <td><a href="https://github.com/arturdr-org/AI-powered-org-automation-suite"><img src="https://img.shields.io/badge/Security-Scanning-red?style=for-the-badge&logo=security" alt="Security Scanning"/></a></td>
+    <td><a href="https://github.com/arturdr-org/AI-powered-org-automation-suite"><img src="https://img.shields.io/badge/Code%20Quality-A%2B-brightgreen?style=for-the-badge&logo=sonarcloud" alt="Code Quality"/></a></td>
+    <td><a href="https://github.com/arturdr-org/AI-powered-org-automation-suite/tree/main/docs"><img src="https://img.shields.io/badge/Docs-Comprehensive-blue?style=for-the-badge&logo=gitbook" alt="Documentation"/></a></td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/arturdr-org/AI-powered-org-automation-suite/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-purple?style=for-the-badge" alt="License"/></a></td>
+    <td><a href="https://github.com/arturdr-org/AI-powered-org-automation-suite/issues"><img src="https://img.shields.io/github/issues/arturdr-org/AI-powered-org-automation-suite?style=for-the-badge" alt="GitHub Issues"/></a></td>
+    <td><a href="https://github.com/arturdr-org/AI-powered-org-automation-suite/stargazers"><img src="https://img.shields.io/github/stars/arturdr-org/AI-powered-org-automation-suite?style=for-the-badge" alt="GitHub Stars"/></a></td>
+    <td><a href="https://github.com/arturdr-org/AI-powered-org-automation-suite/commits/main"><img src="https://img.shields.io/github/last-commit/arturdr-org/AI-powered-org-automation-suite?style=for-the-badge" alt="Last Commit"/></a></td>
+  </tr>
+</table>
+
+## ⚡ Referência rápida (Warp)
+
+- Leia o guia operacional: [WARP.md](./WARP.md)
+- Validação local (espelha o pipeline CI):
+  ```bash
+  chmod +x validate_warp.sh
+  ./validate_warp.sh
+  ```
 
 ## 🌟 Visão Geral
 
@@ -34,66 +51,66 @@ Este repositório contém um **sistema revolucionário de automação baseado em
 
 ```
 AI-powered-org-automation-suite/
-├── 📄 README.md                    # Project overview & quick start
-├── 📄 LICENSE                      # MIT License
-├── 📄 requirements.txt             # Python dependencies
-├── 📄 setup.py                     # Package configuration
-├── 📄 .gitignore                   # Git ignore rules
-├── 📄 .gitattributes               # Git attributes
+├── 📄 README.md                              # Project overview & quick start
+├── 📄 LICENSE                                # MIT License
+├── 📄 requirements.txt                       # Python dependencies
+├── 📄 setup.py                               # Package configuration
+├── 📄 .gitignore                             # Git ignore rules
+├── 📄 .gitattributes                         # Git attributes
 │
-├── 🧠 core/                        # Central automation system
-│   ├── automation/                 # Core automation engine
-│   ├── monitoring/                 # System monitoring & metrics  
-│   ├── dashboard/                  # Visualization interface
-│   └── testing/                    # Core system tests
+├── 🧠 core/                                  # Central automation system
+│   ├── automation/                           # Core automation engine
+│   ├── monitoring/                           # System monitoring & metrics
+│   ├── dashboard/                            # Visualization interface
+│   └── testing/                              # Core system tests
 │
-├── 🔧 modules/                     # Domain-specific functionality
-│   ├── cicd/                       # CI/CD automation & pipelines
-│   ├── security/                   # Security & compliance
-│   ├── quality/                    # Code quality management
-│   └── notifications/              # Multi-channel alerting
+├── 🔧 modules/                               # Domain-specific functionality
+│   ├── cicd/                                 # CI/CD automation & pipelines
+│   ├── security/                             # Security & compliance
+│   ├── quality/                              # Code quality management
+│   └── notifications/                        # Multi-channel alerting
 │
-├── 🔗 mcp-submodules/              # Model Context Protocol integrations
-│   ├── github-integration/         # GitHub MCP implementation
-│   ├── automation-core/            # MCP automation engine
-│   └── ai-coordination/            # AI coordination hub
+├── 🔗 mcp-submodules/                        # Model Context Protocol integrations
+│   ├── github-integration/                   # GitHub MCP implementation
+│   ├── automation-core/                      # MCP automation engine
+│   └── ai-coordination/                      # AI coordination hub
 │
-├── 🤝 shared/                      # Shared resources
-│   ├── config/                     # Global configurations
-│   │   └── sonar-project.properties # Code quality config
-│   ├── utils/                      # Common utilities
-│   ├── templates/                  # Reusable templates
-│   └── packages/                   # Package configurations
+├── 🤝 shared/                                # Shared resources
+│   ├── config/                               # Global configurations
+│   │   └── sonar-project.properties           # Code quality config
+│   ├── utils/                                # Common utilities
+│   ├── templates/                            # Reusable templates
+│   └── packages/                             # Package configurations
 │
-├── 🧪 tests/                       # Comprehensive test suites
-│   ├── unit/                       # Unit tests
-│   ├── integration/                # Integration tests
-│   ├── e2e/                        # End-to-end tests
-│   └── fixtures/                   # Test fixtures & data
+├── 🧪 tests/                                 # Comprehensive test suites
+│   ├── unit/                                 # Unit tests
+│   ├── integration/                          # Integration tests
+│   ├── e2e/                                  # End-to-end tests
+│   └── fixtures/                             # Test fixtures & data
 │
-├── 📜 scripts/                     # AI-powered automation scripts
-│   ├── ai-integration-hub.py      # Multi-AI coordination hub
-│   ├── ai-manual-parser.py        # Intelligent command parser
-│   ├── demo-ai-system.py          # System demonstration
-│   └── setup_enterprise.py        # Enterprise setup script
+├── 📜 scripts/                               # AI-powered automation scripts
+│   ├── ai-integration-hub.py                 # Multi-AI coordination hub
+│   ├── ai-manual-parser.py                   # Intelligent command parser
+│   ├── demo-ai-system.py                     # System demonstration
+│   └── setup_enterprise.py                   # Enterprise setup script
 │
-├── 📚 docs/                        # Complete documentation
-│   ├── SETUP.md                    # Installation & setup guide
-│   ├── CONTRIBUTING.md             # Professional contribution guide
-│   ├── GOVERNANCE.md               # Project governance & policies
-│   ├── architecture.md             # System architecture overview
-│   ├── releases/                   # Release notes and history
-│   │   └── v1.0.0/                 # Version 1.0.0 release
-│   │       └── RELEASE_NOTES.md    # Detailed release notes
-│   ├── architecture/               # Detailed architecture docs
-│   └── guides/                     # User & developer guides
+├── 📚 docs/                                  # Complete documentation
+│   ├── SETUP.md                              # Installation & setup guide
+│   ├── CONTRIBUTING.md                       # Professional contribution guide
+│   ├── GOVERNANCE.md                         # Project governance & policies
+│   ├── architecture.md                       # System architecture overview
+│   ├── releases/                             # Release notes and history
+│   │   └── v1.0.0/                           # Version 1.0.0 release
+│   │       └── RELEASE_NOTES.md              # Detailed release notes
+│   ├── architecture/                         # Detailed architecture docs
+│   └── guides/                               # User & developer guides
 │
-├── 📊 logs/                        # Runtime logs (gitignored)
-├── 🏭 workflow-templates/          # GitHub workflow templates
-└── ⚙️ .github/                     # GitHub automation
-    ├── workflows/                  # Automated workflows
-    ├── ISSUE_TEMPLATE/             # Professional issue templates
-    └── pull_request_template.md   # PR template
+├── 📊 logs/                                  # Runtime logs (gitignored)
+├── 🏭 workflow-templates/                    # GitHub workflow templates
+└── ⚙️ .github/                               # GitHub automation
+    ├── workflows/                            # Automated workflows
+    ├── ISSUE_TEMPLATE/                       # Professional issue templates
+    └── pull_request_template.md              # PR template
 ```
 
 ### 🎯 Componentes AI-Powered
@@ -169,7 +186,7 @@ GITHUB_TOKEN=ghp_...
 
 ```bash
 # Clonar repositório
-git clone https://github.com/arturdr-org/org-automation.git
+git clone https://github.com/arturdr-org/AI-powered-org-automation-suite.git
 cd AI-powered-org-automation-suite
 
 # Criar ambiente virtual
@@ -374,7 +391,7 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 *Transformando infraestrutura através da colaboração entre Inteligências Artificiais*
 
 [![Made with Python](https://img.shields.io/badge/Made%20with-Python-blue?style=for-the-badge&logo=python)](https://python.org)
-[![Powered by AI](https://img.shields.io/badge/Powered%20by-AI-brightgreen?style=for-the-badge)](https://github.com/arturdr-org/org-automation)
-[![Enterprise Grade](https://img.shields.io/badge/Enterprise-Grade-orange?style=for-the-badge)](https://github.com/arturdr-org/org-automation)
+[![Powered by AI](https://img.shields.io/badge/Powered%20by-AI-brightgreen?style=for-the-badge)](https://github.com/arturdr-org/AI-powered-org-automation-suite)
+[![Enterprise Grade](https://img.shields.io/badge/Enterprise-Grade-orange?style=for-the-badge)](https://github.com/arturdr-org/AI-powered-org-automation-suite)
 
 </div>
