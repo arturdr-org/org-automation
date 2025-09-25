@@ -42,7 +42,7 @@ jobs:
 
     steps:
       - name: 📥 Checkout do repositório
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🔑 Criar token do GitHub App
         id: app-token
