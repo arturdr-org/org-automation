@@ -1,0 +1,67 @@
+name: 🤖 AI Enhancement
+description: Suggest improvements to AI functionality
+title: "[AI] "
+labels: ["ai-enhancement", "needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Suggest improvements to our AI-powered automation system!
+
+  - type: dropdown
+    id: ai_provider
+    attributes:
+      label: AI Provider
+      description: Which AI provider is this related to?
+      options:
+        - Warp Agent (Local)
+        - Claude (Anthropic)
+        - GPT (OpenAI)
+        - Gemini (Google)
+        - Multi-AI Collaboration
+        - New Provider Suggestion
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_behavior
+    attributes:
+      label: Current AI Behavior
+      description: How does the AI currently handle this scenario?
+      placeholder: Currently the AI...
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired_behavior
+    attributes:
+      label: Desired AI Behavior
+      description: How should the AI behave instead?
+      placeholder: The AI should...
+    validations:
+      required: true
+
+  - type: textarea
+    id: use_cases
+    attributes:
+      label: Use Cases
+      description: When would this improvement be beneficial?
+      placeholder: |
+        - During repository automation
+        - When handling critical incidents
+        - For routine maintenance tasks
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: impact
+    attributes:
+      label: Impact Areas
+      description: Which areas would this improvement affect?
+      options:
+        - label: Decision Making Quality
+        - label: Response Time
+        - label: Error Reduction
+        - label: Learning Efficiency
+        - label: Multi-AI Collaboration
+        - label: User Experience
