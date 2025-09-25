@@ -31,3 +31,6 @@ labels:
   - name: invalid
     color: e4e669
     description: Inválido ou fora do escopo
+  - name: mcp-managed-test
+    color: 5319e7
+    description: Label de teste gerenciada pelo MCP
