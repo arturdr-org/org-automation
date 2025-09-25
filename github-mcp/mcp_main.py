@@ -1,11 +1,16 @@
 import os
 import sys
 import time
+import json
+import base64
+import requests
 import yaml
+import jwt
 from github import Github, Auth
 from github.GithubException import GithubException
 
 DEFAULT_LABELS_PATH = os.path.join(os.path.dirname(__file__), "config", "labels.yml")
+GITHUB_API = "https://api.github.com"
 
 
 def load_labels_config(path: str = DEFAULT_LABELS_PATH):
@@ -28,11 +33,71 @@ def load_labels_config(path: str = DEFAULT_LABELS_PATH):
     return norm
 
 
-def get_token():
-    # Prioriza token do segredo do workflow
+def create_app_jwt(app_id: str, private_key_pem: str) -> str:
+    now = int(time.time())
+    payload = {
+        "iat": now - 60,
+        "exp": now + 8 * 60,  # 8 minutos
+        "iss": app_id,
+    }
+    token = jwt.encode(payload, private_key_pem, algorithm="RS256")
+    # PyJWT>=2 returns str; ensure str
+    if isinstance(token, bytes):
+        token = token.decode("utf-8")
+    return token
+
+
+def get_app_installation_id(org_name: str, app_jwt: str) -> int:
+    headers = {
+        "Authorization": f"Bearer {app_jwt}",
+        "Accept": "application/vnd.github+json",
+    }
+    # Try org installation endpoint (preferred)
+    url = f"{GITHUB_API}/orgs/{org_name}/installation"
+    r = requests.get(url, headers=headers, timeout=20)
+    if r.status_code == 200:
+        data = r.json()
+        return int(data.get("id"))
+    # Fallback: list installations accessible to app
+    url = f"{GITHUB_API}/app/installations"
+    r = requests.get(url, headers=headers, timeout=20)
+    if r.status_code == 200:
+        for inst in r.json():
+            account = inst.get("account", {})
+            if account.get("login") == org_name:
+                return int(inst.get("id"))
+    raise RuntimeError(f"Não foi possível localizar installation para org {org_name} (status {r.status_code})")
+
+
+def get_app_installation_token(org_name: str, app_id: str, private_key_pem: str) -> str:
+    app_jwt = create_app_jwt(app_id, private_key_pem)
+    inst_id = get_app_installation_id(org_name, app_jwt)
+    headers = {
+        "Authorization": f"Bearer {app_jwt}",
+        "Accept": "application/vnd.github+json",
+    }
+    url = f"{GITHUB_API}/app/installations/{inst_id}/access_tokens"
+    r = requests.post(url, headers=headers, timeout=20)
+    if r.status_code != 201:
+        raise RuntimeError(f"Falha ao obter installation token (status {r.status_code}): {r.text}")
+    return r.json().get("token")
+
+
+def get_token(org_name: str):
+    # Preferir GitHub App se variáveis estiverem definidas
+    app_id = os.getenv("ORG_APP_ID")
+    app_key = os.getenv("ORG_APP_PRIVATE_KEY")
+    if app_id and app_key:
+        try:
+            token = get_app_installation_token(org_name, app_id, app_key)
+            if token:
+                return token
+        except Exception as e:
+            print(f"[aviso] Autenticação via GitHub App falhou: {e}. Tentando PAT...")
+    # Fallback: PAT/GITHUB_TOKEN
     token = os.getenv("ORG_AUTOMATION_PAT") or os.getenv("GITHUB_TOKEN")
     if not token:
-        print("[erro] Nenhum token encontrado nas variáveis ORG_AUTOMATION_PAT ou GITHUB_TOKEN.")
+        print("[erro] Nenhum token encontrado (GitHub App ou ORG_AUTOMATION_PAT/GITHUB_TOKEN).")
         sys.exit(1)
     return token
 
@@ -69,7 +134,8 @@ def main():
 
     print(f"Executando GitHub MCP para organização: {org_name} (dry_run={dry_run})")
 
-    token = get_token()
+    # Seleciona token (prefere GitHub App se disponível)
+    token = get_token(org_name)
     gh = Github(auth=Auth.Token(token))
 
     # Carrega labels desejadas

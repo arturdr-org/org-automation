@@ -19,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ORG_AUTOMATION_PAT: ${{ secrets.ORG_AUTOMATION_PAT }}
+      ORG_APP_ID: ${{ secrets.ORG_APP_ID }}
+      ORG_APP_PRIVATE_KEY: ${{ secrets.ORG_APP_PRIVATE_KEY }}
 
     steps:
       - uses: actions/checkout@v3
