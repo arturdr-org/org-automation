@@ -1,107 +1,17 @@
-# 🚫 .gitignore - org-automation v3.0
-# MCP specific ignores
-mcp-submodules/*/node_modules/
-mcp-submodules/*/venv/
-mcp-submodules/*/.env
-mcp-submodules/*/logs/
+# 🚫 AI-Powered Org Automation Suite - .gitignore
 
-# Automation outputs
-organization_report_*.json
-organization_dashboard_*.html
-health_check_report_*.json
-modernization_report_*.json
-security_reports/
-test-results/
-
-# Python
-__pycache__/
-*.py[cod]
-.venv/
-venv/
+# ==========================================
+# LOGS E RUNTIME
+# ==========================================
+logs/
 *.log
-.env
-
-# ============================================
-# Logs e arquivos temporários
-# ============================================
-logs/*.log
-*.log
+*.bak
 *.tmp
 *.temp
-.DS_Store
-Thumbs.db
 
-# ============================================
-# Arquivos de configuração sensíveis
-# ============================================
-shared/config/secrets.json
-shared/config/api-keys.json
-.env.local
-.env.production
-
-# ============================================
-# Cache e arquivos gerados
-# ============================================
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# ============================================
-# IDEs
-# ============================================
-.vscode/settings.json
-.idea/
-*.swp
-*.swo
-*~
-
-# ============================================
-# Arquivos específicos do projeto
-# ============================================
-ai_knowledge_base.json
-mcp_creation_demo_report_*.json
-backup_pre_migration/
-
-
-# ============================================
-# AI-Specific Ignores
-# ============================================
-ai_knowledge_base.json
-*.ai_cache
-.ai_temp/
-llm_responses/
-
-# ============================================
-# Development Tools
-# ============================================
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.DS_Store
-Thumbs.db
-
-# ============================================
-# Python Enhanced
-# ============================================
+# ==========================================  
+# PYTHON
+# ==========================================
 __pycache__/
 *.py[cod]
 *$py.class
@@ -119,102 +29,141 @@ parts/
 sdist/
 var/
 wheels/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
 
-# ============================================
-# Testing and Coverage
-# ============================================
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-cover/
-htmlcov/
-
-# ============================================
-# Documentation
-# ============================================
-docs/_build/
-.readthedocs.yml
-
-# ============================================
-# Jupyter Notebook
-# ============================================
-.ipynb_checkpoints
-
-# ============================================
-# Environment Variables
-# ============================================
+# ==========================================
+# AMBIENTE VIRTUAL
+# ==========================================
 .env
 .env.local
 .env.development
 .env.test
 .env.production
-.venv
+.venv/
 env/
-venv/
 ENV/
 env.bak/
 venv.bak/
 
-# ============================================
-# Logs and Databases
-# ============================================
-logs/*.log
-*.log
-*.sqlite3
-*.db
+# ==========================================
+# IDE & EDITORES
+# ==========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
 
-# ============================================
-# Temporary Files
-# ============================================
-*.tmp
-*.temp
+# ==========================================
+# SISTEMA OPERACIONAL
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ==========================================
+# TESTES & COVERAGE
+# ==========================================
+.coverage
+.pytest_cache/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+htmlcov/
+
+# ==========================================
+# JUPYTER NOTEBOOKS
+# ==========================================  
+.ipynb_checkpoints
+
+# ==========================================
+# MYPY
+# ==========================================
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ==========================================
+# DADOS SENSÍVEIS
+# ==========================================
+*.key
+*.pem
+*.p12
+*.pfx
+secrets/
+credentials/
+.credentials
+config/secrets.json
+config/private.yml
+
+# ==========================================
+# CACHE & TEMP
+# ==========================================
+.cache/
 .tmp/
-.temp/
-*_backup
-*_old
-
-# ============================================
-# Package Managers
-# ============================================
+tmp/
+cache/
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+*.pid
+*.seed
+*.pid.lock
 
-# ============================================
-# Container and Orchestration
-# ============================================
-.dockerignore
-Dockerfile.dev
-docker-compose.override.yml
+# ==========================================
+# DATABASE
+# ==========================================
+*.db
+*.sqlite
+*.sqlite3
 
-# ============================================
-# Cloud and Secrets
-# ============================================
-.terraform/
-*.tfstate
-*.tfstate.*
-.secrets/
-secrets.json
-api-keys.json
+# ==========================================
+# RELATÓRIOS & OUTPUTS
+# ==========================================
+reports/
+outputs/
+results/
+*.report
+*.output
 
-# ============================================
-# Monitoring and Observability
-# ============================================
-*.pprof
-.jaeger/
-.prometheus/
+# ==========================================
+# BACKUP & MIGRATION
+# ==========================================
+backup_*/
+migration_*/
+*.backup
+*.bak
 
+# ==========================================
+# AI & ML ESPECÍFICOS
+# ==========================================
+models/
+checkpoints/
+*.model
+*.pkl
+*.joblib
+
+# ==========================================
+# GITHUB ESPECÍFICOS
+# ==========================================
+# Mantém templates mas ignora logs de actions
+.github/workflows/logs/
+action-logs/
+
+# ==========================================
+# PROJETO ESPECÍFICOS
+# ==========================================
+# Ignora logs do sistema de automação
+ai_operations.log
+automation_*.log
+health_check.log
+integration_hub.log

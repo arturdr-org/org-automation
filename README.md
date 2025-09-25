@@ -32,82 +32,6 @@ Este repositório contém um **sistema revolucionário de automação baseado em
 
 ### 🏗️ Enterprise-Grade Architecture
 
-```
-AI-powered-AI-powered-org-automation-suite/
-├── 📄 README.md                 # Project overview & quick start
-├── 🤝 CONTRIBUTING.md           # Professional contribution guide
-├── 📋 GOVERNANCE.md             # Project governance & policies
-├── 🛠️ SETUP.md                  # Installation & setup guide
-├── 📦 requirements.txt          # Python dependencies
-├── 🔧 setup.py                  # Package configuration
-├── 📊 sonar-project.properties  # Code quality configuration
-│
-├── 🧠 core/                     # Central automation system
-│   ├── automation/              # Core automation engine
-│   ├── monitoring/              # System monitoring & metrics  
-│   ├── dashboard/               # Visualization interface
-│   └── testing/                 # Core system tests
-│
-├── 🔧 modules/                  # Domain-specific functionality
-│   ├── cicd/                    # CI/CD automation & pipelines
-│   │   ├── workflows/           # Workflow definitions
-│   │   ├── pipelines/           # Pipeline configurations
-│   │   ├── deployment/          # Deployment strategies
-│   │   └── testing/             # CI/CD testing
-│   ├── security/                # Security & compliance
-│   │   ├── scanning/            # Vulnerability scanning
-│   │   ├── policies/            # Security policies
-│   │   ├── compliance/          # Compliance checking
-│   │   └── monitoring/          # Security monitoring
-│   ├── quality/                 # Code quality management
-│   │   ├── code_analysis/       # Static/dynamic analysis
-│   │   ├── metrics/             # Quality metrics
-│   │   ├── reporting/           # Quality reports
-│   │   └── standards/           # Coding standards
-│   └── notifications/           # Multi-channel alerting
-│       ├── slack/               # Slack integration
-│       ├── email/               # Email notifications
-│       ├── pagerduty/           # PagerDuty integration
-│       └── webhooks/            # Generic webhooks
-│
-├── 🤝 shared/                   # Shared resources
-│   ├── config/                  # Global configurations
-│   ├── utils/                   # Common utilities
-│   └── templates/               # Reusable templates
-│
-├── 🔗 mcp-submodules/           # Model Context Protocol integrations
-│   └── github-mcp/              # GitHub MCP implementation
-│
-├── 🧪 tests/                    # Comprehensive test suites
-│   ├── unit/                    # Unit tests
-│   ├── integration/             # Integration tests
-│   ├── e2e/                     # End-to-end tests
-│   └── fixtures/                # Test fixtures & data
-│
-├── 📜 scripts/                  # AI-powered automation scripts
-│   ├── ai-integration-hub.py   # Multi-AI coordination hub
-│   ├── ai-manual-parser.py     # Intelligent command parser
-│   ├── demo-ai-system.py       # System demonstration
-│   └── [11 total AI scripts]   # Complete automation toolkit
-│
-├── 📚 docs/                     # Technical documentation
-│   ├── architecture/            # Architecture & design docs
-│   │   ├── REPOSITORY_STRUCTURE.md
-│   │   └── MODERNIZATION_PLAN.md
-│   ├── guides/                  # User & developer guides
-│   │   └── GITHUB_APP_SETUP.md
-│   ├── architecture.md          # System architecture overview
-│   ├── mcp.md                   # MCP integration details
-│   ├── onboarding.md            # Quick start guide
-│   └── ai-operations-manual.md  # AI operations manual
-│
-├── 📊 logs/                     # Organized execution logs
-├── 🏭 workflow-templates/       # GitHub workflow templates
-└── ⚙️ .github/                  # GitHub automation
-    ├── workflows/               # Automated workflows
-    ├── ISSUE_TEMPLATE/          # Professional issue templates
-    └── pull_request_template.md # PR template
-```
 
 ### 🎯 Componentes AI-Powered
 
@@ -176,22 +100,6 @@ PAGERDUTY_INTEGRATION_KEY=...
 
 # GitHub (se necessário)
 GITHUB_TOKEN=ghp_...
-```
-
-### 📦 2. Instalação de Dependências
-
-```bash
-# Clonar repositório
-git clone https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite.git
-cd AI-powered-AI-powered-org-automation-suite
-
-# Criar ambiente virtual
-python3 -m venv .venv
-source .venv/bin/activate
-
-# Instalar dependências
-pip install -r requirements.txt
-```
 
 ### 🧪 3. Testes Iniciais
 
@@ -207,21 +115,6 @@ python scripts/ai-integration-hub.py list providers
 
 # Testar operações disponíveis
 python scripts/ai-integration-hub.py list operations
-```
-
-## 🎮 Como Usar
-
-### 💻 Execução Local
-
-#### Comandos Individuais
-```bash
-# Executar comando específico via AI Hub
-python scripts/ai-integration-hub.py request warp_agent "Health Check" \
-  --parameters '{"dry_run": true}' --priority 1
-
-# Executar via parser diretamente  
-python scripts/ai-manual-parser.py --command "Monitoramento do Sistema" --dry-run
-```
 
 #### Iniciar Hub de Integração
 ```bash
@@ -230,45 +123,6 @@ python scripts/ai-integration-hub.py start
 
 # Iniciar como daemon
 python scripts/ai-integration-hub.py start --daemon
-```
-
-### ☁️ Execução via GitHub Actions
-
-#### Execução Manual
-1. Vá para **Actions** → **🤖 AI-Powered Operations**
-2. Clique em **Run workflow**
-3. Configure parâmetros:
-   - **Operation Type**: `health_check`, `daily_routine`, etc.
-   - **Dry Run**: `true` para simulação
-   - **AI Requester**: identificação do sistema solicitante
-
-#### Execução Automática
-- ⏰ **Rotinas diárias**: 6:00 e 18:00 UTC
-- 🔄 **Health checks**: A cada 4 horas
-- 📊 **Relatórios semanais**: Segundas às 6:00 UTC
-
-### 🤖 Colaboração Multi-IA
-
-#### Cenário de Exemplo: Problema de CPU Alta
-1. **🚨 Detecção**: Sistema detecta CPU alta via monitoramento
-2. **🤖 Warp Agent**: Consulta manual e identifica comandos relevantes
-3. **💭 Claude**: Analisa logs para identificar causa raiz
-4. **🔍 GPT**: Sugere soluções baseadas em histórico
-5. **✅ Consenso**: AIs decidem melhor ação colaborativamente
-6. **⚡ Execução**: Warp Agent executa solução aprovada
-7. **📚 Aprendizado**: Todos os AIs atualizam base de conhecimento
-8. **📧 Notificação**: Alertas enviados para equipes relevantes
-
-## 📊 Monitoramento e Métricas
-
-### 🏥 Health Dashboard
-```bash
-# Verificar status do sistema
-python scripts/ai-integration-hub.py status
-
-# Gerar relatório de saúde
-python scripts/ai-manual-parser.py --report
-```
 
 ### 📈 KPIs Monitorados
 - **Taxa de Disponibilidade**: Uptime dos serviços críticos
@@ -302,56 +156,3 @@ python -m pytest tests/integration/ -v
 
 # Testes end-to-end
 python -m pytest tests/e2e/ -v
-```
-
-### 📖 Documentação
-- 📚 **Arquitetura**: [`docs/architecture/`](docs/architecture/)
-- 📋 **Guias de Uso**: [`docs/guides/`](docs/guides/)
-- 🏗️ **Estrutura do Repo**: [`docs/architecture/REPOSITORY_STRUCTURE.md`](docs/architecture/REPOSITORY_STRUCTURE.md)
-
-## 🌟 Próximas Funcionalidades
-
-### 🔮 Roadmap AI
-- [ ] **Integração com mais AIs**: Anthropic Claude-3, OpenAI GPT-5
-- [ ] **Predição de falhas**: ML para antecipação de problemas
-- [ ] **Auto-scaling inteligente**: Ajuste automático de recursos
-- [ ] **Compliance automático**: Verificação de políticas via IA
-- [ ] **Documentação auto-gerada**: Docs mantidas pelas AIs
-
-### 🚀 Melhorias de Performance  
-- [ ] **Cache distribuído**: Para respostas de IA frequentes
-- [ ] **Load balancing**: Entre múltiplos provedores AI
-- [ ] **Otimização de custos**: Roteamento inteligente por custo/performance
-- [ ] **Métricas avançadas**: Dashboards em tempo real
-
-## 🤝 Como Contribuir
-
-1. **Fork** o repositório
-2. **Crie** uma feature branch: `git checkout -b feature/amazing-feature`
-3. **Teste** suas mudanças: `python scripts/demo-ai-system.py`
-4. **Commit** suas mudanças: `git commit -m 'Add amazing feature'`
-5. **Push** para a branch: `git push origin feature/amazing-feature`
-6. **Abra** um Pull Request
-
-## 📜 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para detalhes.
-
-## 🆘 Suporte
-
-- 📖 **Documentação**: [docs/](docs/)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite/issues)
-- 💬 **Discussões**: [GitHub Discussions](https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite/discussions)
-- 📧 **Email**: Disponível nos settings da organização
-
----
-
-<div align="center">
-
-**🤖 Construído com IA colaborativa para o futuro da automação 🚀**
-
-[![Made with ❤️](https://img.shields.io/badge/made%20with-❤️-red)](https://github.com/arturdr-org)
-[![AI Powered](https://img.shields.io/badge/AI-powered-blue)](https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite)
-[![Open Source](https://img.shields.io/badge/open-source-green)](https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite)
-
-</div>
