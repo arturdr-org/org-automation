@@ -57,7 +57,7 @@ jobs:
         extra_args: --debug --only-verified
     
     - name: "📊 Upload Secret Scan Results"
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: secret-scan-results
@@ -112,7 +112,7 @@ jobs:
       continue-on-error: true
         
     - name: "📊 Upload Dependency Scan Results"
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: dependency-scan-results
@@ -171,7 +171,7 @@ jobs:
       continue-on-error: true
         
     - name: "📊 Upload Code Security Results"
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: code-security-results
@@ -296,7 +296,7 @@ jobs:
         echo "- **Scan Date**: $(date)" >> $GITHUB_STEP_SUMMARY
         
     - name: "💾 Upload Consolidated Report"
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: consolidated-security-report
         path: consolidated-security-report.json
