@@ -1,0 +1,106 @@
+# 🧹 Stale Bot Configuration - org-automation
+# Configuração para limpeza automática de issues e pull requests inativos
+
+# Número de dias para considerar issue/PR como stale
+daysUntilStale: 60
+# Número de dias após marcar como stale para fechar
+daysUntilClose: 7
+
+# Labels a serem aplicadas
+staleLabel: stale
+# Exemptions - issues/PRs com estes labels nunca ficam stale
+exemptLabels:
+  - pinned
+  - security
+  - bug
+  - enhancement
+  - "good first issue"
+  - "help wanted"
+  - priority/high
+  - priority/critical
+
+# Configuração para Issues
+issues:
+  # Comentário quando issue fica stale
+  markComment: >
+    Esta issue foi marcada como inativa porque não teve atividade recente.
+    Ela será fechada em 7 dias se não houver mais atividade.
+    
+    Para manter esta issue ativa:
+    - Adicione um comentário explicando por que deve permanecer aberta
+    - Adicione uma das labels de exceção (pinned, security, bug, enhancement)
+    - Remova a label 'stale'
+    
+    Obrigado pela sua contribuição! 🙏
+
+  # Comentário antes de fechar
+  closeComment: >
+    Esta issue foi fechada automaticamente devido à inatividade.
+    
+    Se você acredita que esta issue ainda é relevante, sinta-se à vontade para:
+    - Reabrir a issue
+    - Criar uma nova issue com informações atualizadas
+    
+    Obrigado! 🚀
+
+  # Limitar número de issues processadas por execução
+  limitPerRun: 30
+
+# Configuração para Pull Requests  
+pulls:
+  # PRs ficam stale mais rápido
+  daysUntilStale: 30
+  daysUntilClose: 5
+  
+  # Comentário quando PR fica stale
+  markComment: >
+    Este pull request foi marcado como inativo devido à falta de atividade recente.
+    Será fechado em 5 dias se não houver mais atividade.
+    
+    Para manter este PR ativo:
+    - Responda aos comentários de revisão
+    - Faça push de novos commits
+    - Adicione um comentário explicando o status
+    - Remova a label 'stale'
+    
+    Agradecemos sua contribuição! 👨‍💻
+
+  # Comentário antes de fechar PR
+  closeComment: >
+    Este pull request foi fechado automaticamente devido à inatividade.
+    
+    Se você ainda deseja que estas mudanças sejam incluídas:
+    - Reabra este PR e atualize conforme necessário
+    - Crie um novo PR com as mudanças atualizadas
+    
+    Obrigado pela contribuição! ✨
+
+  # Limitar PRs processados por execução
+  limitPerRun: 20
+
+# Labels adicionais para exemção em PRs
+exemptPullRequestLabels:
+  - "work in progress"
+  - "do not merge"
+  - "waiting for review"
+  - "dependencies"
+
+# Não processar issues/PRs com estas palavras no título
+exemptTitleKeywords:
+  - "[WIP]"
+  - "[DRAFT]"
+  - "[HOLD]"
+  - "RFC:"
+
+# Configurações avançadas
+# Processar apenas issues/PRs atribuídos (false = processar todos)
+onlyLabeled: false
+
+# Remover label stale quando há atividade
+removeStaleWhenUpdated: true
+
+# Ordem de processamento (oldestFirst ou newestFirst)
+ascending: true
+
+# Incluir apenas issues/PRs com estas labels (vazio = todos)
+onlyLabels: []

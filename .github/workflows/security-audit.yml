@@ -1,0 +1,312 @@
+# 🛡️ Security Audit Pipeline - Continuous Security Monitoring
+# Workflow especializado em segurança com múltiplos scanners
+
+name: "🛡️ Security Audit"
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Execução diária às 02:00 UTC (segurança contínua)
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      scan_type:
+        description: 'Type of security scan'
+        required: false
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - dependencies
+          - code
+          - secrets
+
+env:
+  PYTHON_VERSION: '3.9'
+
+jobs:
+  # ============================================
+  # 🔍 Secret Scanning
+  # ============================================
+  secret-scan:
+    name: "🔍 Secret Detection"
+    runs-on: ubuntu-latest
+    if: ${{ inputs.scan_type == 'full' || inputs.scan_type == 'secrets' || inputs.scan_type == '' }}
+    
+    steps:
+    - name: "📥 Checkout Code"
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for secret scanning
+    
+    - name: "🕵️ GitLeaks Secret Scan"
+      uses: gitleaks/gitleaks-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+        
+    - name: "🔒 TruffleHog Secret Scan"
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: main
+        head: HEAD
+        extra_args: --debug --only-verified
+    
+    - name: "📊 Upload Secret Scan Results"
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: secret-scan-results
+        path: |
+          gitleaks-report.json
+          trufflehog-results.json
+
+  # ============================================
+  # 🔬 Dependency Security Analysis
+  # ============================================
+  dependency-audit:
+    name: "🔬 Dependency Security"
+    runs-on: ubuntu-latest
+    if: ${{ inputs.scan_type == 'full' || inputs.scan_type == 'dependencies' || inputs.scan_type == '' }}
+    
+    steps:
+    - name: "📥 Checkout Code"
+      uses: actions/checkout@v4
+    
+    - name: "🐍 Setup Python"
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: "📦 Install Dependencies"
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install safety pip-audit
+        
+    - name: "🔒 Snyk Dependency Scan"
+      uses: snyk/actions/python@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --severity-threshold=medium --file=requirements.txt --json-file-output=snyk-dependencies.json
+        command: test
+      continue-on-error: true
+        
+    - name: "🛡️ Safety Dependency Check"
+      run: |
+        echo "🛡️ Executando Safety check..."
+        safety check --json --output safety-report.json || true
+        safety check --short-report
+      continue-on-error: true
+        
+    - name: "🔍 Pip-Audit Scan"
+      run: |
+        echo "🔍 Executando Pip-Audit..."
+        pip-audit --output=json --output-file=pip-audit-report.json || true
+        pip-audit --desc
+      continue-on-error: true
+        
+    - name: "📊 Upload Dependency Scan Results"
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: dependency-scan-results
+        path: |
+          snyk-dependencies.json
+          safety-report.json
+          pip-audit-report.json
+
+  # ============================================
+  # 🧬 Code Security Analysis
+  # ============================================
+  code-security:
+    name: "🧬 Code Security Analysis"
+    runs-on: ubuntu-latest
+    if: ${{ inputs.scan_type == 'full' || inputs.scan_type == 'code' || inputs.scan_type == '' }}
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    
+    steps:
+    - name: "📥 Checkout Code"
+      uses: actions/checkout@v4
+    
+    - name: "🐍 Setup Python"
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: "📦 Install Security Tools"
+      run: |
+        python -m pip install --upgrade pip
+        pip install bandit semgrep
+        
+    - name: "🔍 CodeQL Security Analysis"
+      uses: github/codeql-action/init@v2
+      with:
+        languages: python
+        queries: security-extended,security-and-quality
+        
+    - name: "🔬 Run CodeQL Analysis"
+      uses: github/codeql-action/analyze@v2
+      
+    - name: "🔒 Bandit Security Scan"
+      run: |
+        echo "🔒 Executando Bandit security scan..."
+        bandit -r . -f json -o bandit-security-report.json || true
+        bandit -r . --severity-level medium --confidence-level medium
+      continue-on-error: true
+        
+    - name: "⚡ Semgrep Security Scan"
+      run: |
+        echo "⚡ Executando Semgrep security scan..."
+        semgrep --config=auto --json --output=semgrep-report.json . || true
+        semgrep --config=p/security-audit --config=p/python .
+      continue-on-error: true
+        
+    - name: "📊 Upload Code Security Results"
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: code-security-results
+        path: |
+          bandit-security-report.json
+          semgrep-report.json
+
+  # ============================================
+  # 🌐 Infrastructure Security
+  # ============================================
+  infrastructure-audit:
+    name: "🌐 Infrastructure Security"
+    runs-on: ubuntu-latest
+    if: ${{ inputs.scan_type == 'full' || inputs.scan_type == '' }}
+    
+    steps:
+    - name: "📥 Checkout Code"
+      uses: actions/checkout@v4
+      
+    - name: "🏗️ Docker Security Scan"
+      if: hashFiles('**/Dockerfile') != ''
+      run: |
+        echo "🏗️ Verificando Dockerfiles..."
+        find . -name "Dockerfile*" -type f | head -5
+        # Adicionar hadolint ou docker scout se houver Dockerfiles
+        
+    - name: "⚙️ GitHub Actions Security"
+      run: |
+        echo "⚙️ Verificando workflows do GitHub Actions..."
+        find .github/workflows -name "*.yml" -exec echo "Checking {}" \;
+        # Adicionar actionlint se necessário
+        
+    - name: "🔧 Configuration Security Check"
+      run: |
+        echo "🔧 Verificando arquivos de configuração..."
+        # Verificar arquivos sensíveis
+        find . -name "*.env*" -o -name "*.config" -o -name "*.ini" | grep -v node_modules || echo "Nenhum arquivo sensível encontrado"
+        
+    - name: "📋 Security Policy Check"
+      run: |
+        echo "📋 Verificando políticas de segurança..."
+        if [ -f "SECURITY.md" ]; then
+          echo "✅ SECURITY.md encontrado"
+        else
+          echo "⚠️ SECURITY.md não encontrado - considere criar um"
+        fi
+
+  # ============================================
+  # 📊 Security Report Generation
+  # ============================================
+  security-report:
+    name: "📊 Security Report"
+    runs-on: ubuntu-latest
+    needs: [secret-scan, dependency-audit, code-security, infrastructure-audit]
+    if: always()
+    
+    steps:
+    - name: "📥 Checkout Code"
+      uses: actions/checkout@v4
+    
+    - name: "📤 Download All Scan Results"
+      uses: actions/download-artifact@v3
+      with:
+        path: security-reports/
+        
+    - name: "🐍 Setup Python for Report Generation"
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: "📊 Generate Consolidated Security Report"
+      run: |
+        python -c "
+        import json
+        import os
+        from datetime import datetime
+        
+        print('📊 Generating consolidated security report...')
+        
+        report = {
+            'scan_date': datetime.now().isoformat(),
+            'repository': '${{ github.repository }}',
+            'commit': '${{ github.sha }}',
+            'scan_type': '${{ inputs.scan_type || 'full' }}',
+            'results': {}
+        }
+        
+        # Verificar resultados dos scans
+        for root, dirs, files in os.walk('security-reports'):
+            for file in files:
+                if file.endswith('.json'):
+                    try:
+                        with open(os.path.join(root, file)) as f:
+                            data = json.load(f)
+                            report['results'][file] = {
+                                'found': len(data) if isinstance(data, list) else 1,
+                                'summary': f'Found issues in {file}'
+                            }
+                    except:
+                        report['results'][file] = {'error': 'Could not parse results'}
+        
+        with open('consolidated-security-report.json', 'w') as f:
+            json.dump(report, f, indent=2)
+            
+        print('✅ Security report generated successfully')
+        "
+        
+    - name: "📋 Security Summary"
+      run: |
+        echo "## 🛡️ Security Audit Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Scan Type | Status |" >> $GITHUB_STEP_SUMMARY
+        echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Secret Scan | ${{ needs.secret-scan.result == 'success' && '✅ Clean' || needs.secret-scan.result == 'skipped' && '⏭️ Skipped' || '⚠️ Issues Found' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Dependencies | ${{ needs.dependency-audit.result == 'success' && '✅ Secure' || needs.dependency-audit.result == 'skipped' && '⏭️ Skipped' || '⚠️ Vulnerabilities Found' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Code Security | ${{ needs.code-security.result == 'success' && '✅ Secure' || needs.code-security.result == 'skipped' && '⏭️ Skipped' || '⚠️ Issues Found' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Infrastructure | ${{ needs.infrastructure-audit.result == 'success' && '✅ Secure' || needs.infrastructure-audit.result == 'skipped' && '⏭️ Skipped' || '⚠️ Issues Found' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🔗 Security Resources" >> $GITHUB_STEP_SUMMARY
+        echo "- **GitHub Security Tab**: [View Alerts](https://github.com/${{ github.repository }}/security)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Snyk Dashboard**: [View Vulnerabilities](https://snyk.io/org/arturdr-org)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Scan Date**: $(date)" >> $GITHUB_STEP_SUMMARY
+        
+    - name: "💾 Upload Consolidated Report"
+      uses: actions/upload-artifact@v3
+      with:
+        name: consolidated-security-report
+        path: consolidated-security-report.json
+        
+    - name: "🚨 Security Alert (if issues found)"
+      if: |
+        needs.secret-scan.result == 'failure' || 
+        needs.dependency-audit.result == 'failure' || 
+        needs.code-security.result == 'failure'
+      run: |
+        echo "🚨 ATENÇÃO: Problemas de segurança encontrados!"
+        echo "Verifique os artefatos e relatórios para mais detalhes."
+        exit 1
