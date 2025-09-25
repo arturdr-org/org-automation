@@ -16,19 +16,19 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
     requirements = [line.strip() for line in fh if line.strip() and not line.startswith("#")]
 
 setup(
-    name="ai-powered-AI-powered-org-automation-suite",
+    name="ai-powered-org-automation",
     version="1.0.0",
     author="arturdr-org",
     author_email="contact@arturdr-org.dev",
     description="Enterprise-grade AI-powered automation suite for GitHub organizations",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite",
+    url="https://github.com/arturdr-org/AI-powered-org-automation",
     project_urls={
-        "Bug Tracker": "https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite/issues",
-        "Documentation": "https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite/blob/main/docs/",
-        "Source": "https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite",
-        "Changelog": "https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite/releases",
+        "Bug Tracker": "https://github.com/arturdr-org/AI-powered-org-automation/issues",
+        "Documentation": "https://github.com/arturdr-org/AI-powered-org-automation/blob/main/docs/",
+        "Source": "https://github.com/arturdr-org/AI-powered-org-automation",
+        "Changelog": "https://github.com/arturdr-org/AI-powered-org-automation/releases",
     },
     packages=find_packages(exclude=["tests*", "docs*"]),
     classifiers=[

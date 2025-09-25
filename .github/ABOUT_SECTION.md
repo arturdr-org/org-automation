@@ -6,7 +6,7 @@ Configure estas informações na seção About do repositório:
 Repositório central para desenvolvimento e integração de sistemas DevOps orientados a IA e multi-infraestrutura.
 
 ## Website  
-https://github.com/arturdr-org/AI-powered-org-automation-suite
+https://github.com/arturdr-org/org-automation
 
 ## Topics (separados por vírgula)
 devops,automation,ci-cd,github-actions,python,multi-cloud,mcp,ai-integration,orchestration,workflow

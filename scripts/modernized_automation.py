@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 Modernized Organization Automation - AI-powered-org-automation-suite v3.0
+🚀 Modernized Organization Automation - org-automation v3.0
 
 Sistema de automação organizacional modernizado com integração das melhores 
 práticas e ferramentas do ecossistema GitHub.

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🤖 AI Manual Parser - AI-powered-org-automation-suite v3.0
+🤖 AI Manual Parser - org-automation v3.0
 
 Parser automático para extrair e executar comandos do manual de operações para IAs.
 Permite que IAs leiam o manual e executem operações de forma autônoma.

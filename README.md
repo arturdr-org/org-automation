@@ -2,18 +2,18 @@
 
 > **Revolutionary AI-collaborative automation system** for intelligent infrastructure management and autonomous operations.
 
-[![Enterprise Ready](https://img.shields.io/badge/enterprise-ready-brightgreen?style=for-the-badge)](https://github.com/arturdr-org/AI-powered-org-automation-suite)
-[![AI Multi-Powered](https://img.shields.io/badge/AI-Multi--Powered-blue?style=for-the-badge&logo=openai)](https://github.com/arturdr-org/AI-powered-org-automation-suite)
+[![Enterprise Ready](https://img.shields.io/badge/enterprise-ready-brightgreen?style=for-the-badge)](https://github.com/arturdr-org/org-automation)
+[![AI Multi-Powered](https://img.shields.io/badge/AI-Multi--Powered-blue?style=for-the-badge&logo=openai)](https://github.com/arturdr-org/org-automation)
 [![Python Version](https://img.shields.io/badge/Python-3.9+-yellow?style=for-the-badge&logo=python)](https://python.org)
-[![Architecture](https://img.shields.io/badge/Architecture-Enterprise--Grade-orange?style=for-the-badge)](https://github.com/arturdr-org/AI-powered-org-automation-suite)
-[![CI/CD Pipeline](https://img.shields.io/badge/CI%2FCD-Automated-green?style=for-the-badge&logo=github-actions)](https://github.com/arturdr-org/AI-powered-org-automation-suite/actions)
-[![Security Scanning](https://img.shields.io/badge/Security-Scanning-red?style=for-the-badge&logo=security)](https://github.com/arturdr-org/AI-powered-org-automation-suite)
-[![Code Quality](https://img.shields.io/badge/Code%20Quality-A+-brightgreen?style=for-the-badge&logo=sonarcloud)](https://github.com/arturdr-org/AI-powered-org-automation-suite)
-[![Documentation](https://img.shields.io/badge/Docs-Comprehensive-blue?style=for-the-badge&logo=gitbook)](https://github.com/arturdr-org/AI-powered-org-automation-suite/tree/main/docs)
-[![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](https://github.com/arturdr-org/AI-powered-org-automation-suite/blob/main/LICENSE)
-[![GitHub Issues](https://img.shields.io/github/issues/arturdr-org/AI-powered-org-automation-suite?style=for-the-badge)](https://github.com/arturdr-org/AI-powered-org-automation-suite/issues)
-[![GitHub Stars](https://img.shields.io/github/stars/arturdr-org/AI-powered-org-automation-suite?style=for-the-badge)](https://github.com/arturdr-org/AI-powered-org-automation-suite/stargazers)
-[![Last Commit](https://img.shields.io/github/last-commit/arturdr-org/AI-powered-org-automation-suite?style=for-the-badge)](https://github.com/arturdr-org/AI-powered-org-automation-suite/commits/main)
+[![Architecture](https://img.shields.io/badge/Architecture-Enterprise--Grade-orange?style=for-the-badge)](https://github.com/arturdr-org/org-automation)
+[![CI/CD Pipeline](https://img.shields.io/badge/CI%2FCD-Automated-green?style=for-the-badge&logo=github-actions)](https://github.com/arturdr-org/org-automation/actions)
+[![Security Scanning](https://img.shields.io/badge/Security-Scanning-red?style=for-the-badge&logo=security)](https://github.com/arturdr-org/org-automation)
+[![Code Quality](https://img.shields.io/badge/Code%20Quality-A+-brightgreen?style=for-the-badge&logo=sonarcloud)](https://github.com/arturdr-org/org-automation)
+[![Documentation](https://img.shields.io/badge/Docs-Comprehensive-blue?style=for-the-badge&logo=gitbook)](https://github.com/arturdr-org/org-automation/tree/main/docs)
+[![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](https://github.com/arturdr-org/org-automation/blob/main/LICENSE)
+[![GitHub Issues](https://img.shields.io/github/issues/arturdr-org/org-automation?style=for-the-badge)](https://github.com/arturdr-org/org-automation/issues)
+[![GitHub Stars](https://img.shields.io/github/stars/arturdr-org/org-automation?style=for-the-badge)](https://github.com/arturdr-org/org-automation/stargazers)
+[![Last Commit](https://img.shields.io/github/last-commit/arturdr-org/org-automation?style=for-the-badge)](https://github.com/arturdr-org/org-automation/commits/main)
 
 ## 🌟 Visão Geral
 
@@ -169,7 +169,7 @@ GITHUB_TOKEN=ghp_...
 
 ```bash
 # Clonar repositório
-git clone https://github.com/arturdr-org/AI-powered-org-automation-suite.git
+git clone https://github.com/arturdr-org/org-automation.git
 cd AI-powered-org-automation-suite
 
 # Criar ambiente virtual
@@ -374,7 +374,7 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 *Transformando infraestrutura através da colaboração entre Inteligências Artificiais*
 
 [![Made with Python](https://img.shields.io/badge/Made%20with-Python-blue?style=for-the-badge&logo=python)](https://python.org)
-[![Powered by AI](https://img.shields.io/badge/Powered%20by-AI-brightgreen?style=for-the-badge)](https://github.com/arturdr-org/AI-powered-org-automation-suite)
-[![Enterprise Grade](https://img.shields.io/badge/Enterprise-Grade-orange?style=for-the-badge)](https://github.com/arturdr-org/AI-powered-org-automation-suite)
+[![Powered by AI](https://img.shields.io/badge/Powered%20by-AI-brightgreen?style=for-the-badge)](https://github.com/arturdr-org/org-automation)
+[![Enterprise Grade](https://img.shields.io/badge/Enterprise-Grade-orange?style=for-the-badge)](https://github.com/arturdr-org/org-automation)
 
 </div>
