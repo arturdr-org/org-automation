@@ -1,0 +1,239 @@
+name: 🏥 Health Monitoring & Alerting
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    # Executa health check duas vezes por dia
+    - cron: '0 6,18 * * *'  # 6:00 e 18:00 UTC
+  workflow_run:
+    workflows: ["🚀 Enhanced Organization Automation"]
+    types: [completed]
+
+env:
+  ORG_NAME: arturdr-org
+
+jobs:
+  health-check:
+    name: 🔍 Verificação de Saúde
+    runs-on: ubuntu-latest
+    
+    outputs:
+      health-status: ${{ steps.health-check.outputs.status }}
+      compliance-rate: ${{ steps.health-check.outputs.compliance }}
+      
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔑 Autenticação
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.ORG_APP_ID }}
+          private-key: ${{ secrets.ORG_APP_PRIVATE_KEY }}
+          owner: arturdr-org
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 📦 Instalar dependências
+        run: |
+          pip install -r requirements.txt
+
+      - name: 🏥 Executar Health Check
+        id: health-check
+        env:
+          ORG_AUTOMATION_PAT: ${{ steps.app-token.outputs.token || secrets.ORG_AUTOMATION_PAT }}
+        run: |
+          echo "🏥 Executando verificação de saúde..."
+          python monitoring.py
+          
+          # Capturar dados para outputs
+          if [ -f health_report_*.json ]; then
+            latest_report=$(ls -t health_report_*.json | head -1)
+            health_status=$(jq -r '.overall_health' "$latest_report")
+            compliance_rate=$(jq -r '.automation_stats.compliance_percentage' "$latest_report")
+            
+            echo "status=$health_status" >> $GITHUB_OUTPUT
+            echo "compliance=$compliance_rate" >> $GITHUB_OUTPUT
+            
+            echo "✅ Health status: $health_status"
+            echo "📊 Compliance rate: $compliance_rate%"
+          fi
+
+      - name: 📊 Gerar Dashboard Organizacional
+        env:
+          ORG_AUTOMATION_PAT: ${{ steps.app-token.outputs.token || secrets.ORG_AUTOMATION_PAT }}
+        run: |
+          echo "📊 Gerando dashboard organizacional..."
+          python dashboard.py
+
+      - name: 📊 Upload relatórios e dashboard
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: health-reports-${{ github.run_number }}
+          path: |
+            health_report_*.txt
+            health_report_*.json
+            dashboard_*.html
+            dashboard_metrics_*.json
+          retention-days: 90
+
+      - name: 📈 Resumo no GitHub
+        if: always()
+        run: |
+          echo "## 🏥 Health Check da Organização" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f health_report_*.txt ]; then
+            latest_txt=$(ls -t health_report_*.txt | head -1)
+            echo "### 📋 Resumo do Relatório:" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            head -n 30 "$latest_txt" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+  alert-on-issues:
+    name: 🚨 Alertas e Notificações
+    needs: health-check
+    runs-on: ubuntu-latest
+    if: needs.health-check.outputs.health-status == 'critical'
+    
+    steps:
+      - name: 🔔 Criar Issue Crítico
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const compliance = '${{ needs.health-check.outputs.compliance-rate }}';
+            const status = '${{ needs.health-check.outputs.health-status }}';
+            
+            const title = `🚨 ALERTA: Saúde da Automação em Estado Crítico`;
+            const body = `
+            ## 🚨 Alerta de Saúde da Automação
+            
+            A verificação de saúde da organização detectou problemas críticos que requerem atenção imediata.
+            
+            ### 📊 Métricas Atuais:
+            - **Status Geral**: ${status.toUpperCase()}
+            - **Taxa de Conformidade**: ${compliance}%
+            - **Data da Verificação**: ${new Date().toISOString()}
+            
+            ### 🔗 Links Úteis:
+            - [Execução do Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            - [Painel de Actions](${{ github.server_url }}/${{ github.repository }}/actions)
+            
+            ### 🛠️ Próximos Passos:
+            1. Baixar e analisar os relatórios detalhados
+            2. Identificar repositórios com baixa conformidade
+            3. Executar automação manual se necessário
+            4. Verificar logs de workflows anteriores
+            
+            ### ⚡ Ação Recomendada:
+            Execute o workflow de automação manualmente com modo DRY-RUN primeiro para identificar problemas específicos.
+            
+            ---
+            *Este alerta foi gerado automaticamente pelo sistema de monitoramento.*
+            `;
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['automation', 'priority:critical', 'type:security', 'status:blocked']
+            });
+
+  weekly-report:
+    name: 📊 Relatório Semanal
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' && github.event.schedule == '0 6 * * 1'  # Segunda-feira 6:00 UTC
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔑 Autenticação
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.ORG_APP_ID }}
+          private-key: ${{ secrets.ORG_APP_PRIVATE_KEY }}
+          owner: arturdr-org
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 📦 Instalar dependências
+        run: |
+          pip install -r requirements.txt
+
+      - name: 📊 Gerar Relatório Semanal
+        env:
+          ORG_AUTOMATION_PAT: ${{ steps.app-token.outputs.token || secrets.ORG_AUTOMATION_PAT }}
+        run: |
+          echo "📊 Gerando relatório semanal..."
+          python monitoring.py
+          
+          # Criar issue com relatório semanal
+          if [ -f health_report_*.json ]; then
+            echo "WEEKLY_REPORT_GENERATED=true" >> $GITHUB_ENV
+          fi
+
+      - name: 📬 Criar Issue com Relatório Semanal
+        if: env.WEEKLY_REPORT_GENERATED == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.ORG_AUTOMATION_PAT }}
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Encontrar o relatório mais recente
+            const files = fs.readdirSync('.')
+              .filter(f => f.startsWith('health_report_') && f.endsWith('.txt'))
+              .sort()
+              .reverse();
+            
+            if (files.length > 0) {
+              const reportContent = fs.readFileSync(files[0], 'utf8');
+              const weekNumber = Math.ceil(((new Date() - new Date(new Date().getFullYear(), 0, 1)) / 86400000 + 1) / 7);
+              
+              const title = `📊 Relatório Semanal de Automação - Semana ${weekNumber}/${new Date().getFullYear()}`;
+              const body = `
+              ## 📊 Relatório Semanal da Automação da Organização
+              
+              ### 📅 Período: Semana ${weekNumber} de ${new Date().getFullYear()}
+              
+              \`\`\`
+              ${reportContent}
+              \`\`\`
+              
+              ---
+              *Relatório gerado automaticamente todas as segundas-feiras.*
+              `;
+              
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['automation', 'type:maintenance', 'weekly-report']
+              });
+            }
+
+      - name: 📊 Upload Relatório Semanal
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-report-${{ github.run_number }}
+          path: |
+            health_report_*.txt
+            health_report_*.json
+          retention-days: 365  # Manter relatórios semanais por 1 ano

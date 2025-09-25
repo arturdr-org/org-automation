@@ -18,7 +18,7 @@ jobs:
         with:
           app-id: ${{ secrets.ORG_APP_ID }}
           private-key: ${{ secrets.ORG_APP_PRIVATE_KEY }}
-          owner: arturdrr-org
+          owner: arturdr-org
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -43,6 +43,6 @@ jobs:
 
       - name: Run automation
         env:
-          ORG_NAME: arturdrr-org
+          ORG_NAME: arturdr-org
         run: |
           python automa_org.py

@@ -1,0 +1,171 @@
+name: 🚀 Enhanced Organization Automation
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Execute em modo DRY-RUN (sem fazer alterações)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "true"
+          - "false"
+      target_repos:
+        description: "Repositórios específicos (separados por vírgula, vazio = todos)"
+        required: false
+        default: ""
+  schedule:
+    # Executa diariamente às 2:00 UTC (23:00 no horário de Brasília)
+    - cron: '0 2 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'config/**'
+      - 'enhanced_automation.py'
+      - '.github/workflows/enhanced-automation.yml'
+
+env:
+  ORG_NAME: arturdr-org
+  PROJECT_NUMBER: 1
+
+jobs:
+  automation:
+    name: 🔧 Executar Automação da Organização
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+      repository-projects: write
+
+    steps:
+      - name: 📥 Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: 🔑 Criar token do GitHub App
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.ORG_APP_ID }}
+          private-key: ${{ secrets.ORG_APP_PRIVATE_KEY }}
+          owner: arturdr-org
+
+      - name: 🐍 Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 📦 Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: ⚙️ Resolver token de autenticação
+        run: |
+          if [ -n "${{ steps.app-token.outputs.token }}" ]; then
+            echo "ORG_AUTOMATION_PAT=${{ steps.app-token.outputs.token }}" >> $GITHUB_ENV
+            echo "✅ Usando token do GitHub App"
+          elif [ -n "${{ secrets.ORG_AUTOMATION_PAT }}" ]; then
+            echo "ORG_AUTOMATION_PAT=${{ secrets.ORG_AUTOMATION_PAT }}" >> $GITHUB_ENV
+            echo "✅ Usando PAT do repositório"
+          else
+            echo "❌ Nenhum token disponível (GitHub App ou PAT)"
+            exit 1
+          fi
+
+      - name: 🔍 Validar configurações
+        run: |
+          echo "🏢 Organização: ${{ env.ORG_NAME }}"
+          echo "📊 Número do projeto: ${{ env.PROJECT_NUMBER }}"
+          echo "🧪 Modo DRY-RUN: ${{ inputs.dry_run || 'false' }}"
+          echo "🎯 Repositórios específicos: ${{ inputs.target_repos || 'todos' }}"
+          
+          # Verificar se os arquivos de configuração existem
+          echo "📋 Verificando arquivos de configuração:"
+          for file in config/labels.yml config/branch_protection.yml config/CODEOWNERS; do
+            if [ -f "$file" ]; then
+              echo "  ✅ $file"
+            else
+              echo "  ❌ $file (não encontrado)"
+            fi
+          done
+          
+          echo "📄 Verificando templates:"
+          for template in config/templates/*.md; do
+            if [ -f "$template" ]; then
+              echo "  ✅ $template"
+            else
+              echo "  ❌ $template (não encontrado)"
+            fi
+          done
+
+      - name: 🚀 Executar automação da organização
+        env:
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          TARGET_REPOS: ${{ inputs.target_repos || '' }}
+        run: |
+          echo "🎬 Iniciando automação..."
+          python enhanced_automation.py
+
+      - name: 📊 Upload do relatório de automação
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: automation-report-${{ github.run_number }}
+          path: |
+            automation_report_*.txt
+            automation.log
+          retention-days: 30
+
+      - name: 📈 Resumo da execução
+        if: always()
+        run: |
+          echo "## 📊 Resumo da Automação da Organização" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- 🏢 **Organização**: ${{ env.ORG_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "- ⏰ **Executado em**: $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "- 🧪 **Modo**: ${{ inputs.dry_run == 'true' && 'DRY-RUN' || 'PRODUÇÃO' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 🎯 **Repositórios**: ${{ inputs.target_repos || 'Todos da organização' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f automation.log ]; then
+            echo "### 📋 Últimas linhas do log:" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -n 20 automation.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+  notification:
+    name: 📢 Notificação
+    needs: automation
+    runs-on: ubuntu-latest
+    if: failure() && github.event_name == 'schedule'
+    
+    steps:
+      - name: 🔔 Criar issue em caso de falha
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const title = `🚨 Falha na Automação da Organização - ${new Date().toISOString().split('T')[0]}`;
+            const body = `
+            A automação da organização falhou durante a execução programada.
+            
+            **Detalhes:**
+            - 🏢 Organização: ${{ env.ORG_NAME }}
+            - ⏰ Executado em: ${new Date()}
+            - 🔗 Execução: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            
+            Por favor, verifique os logs para mais detalhes.
+            `;
+            
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['automation', 'priority:high', 'type:bugfix']
+            });

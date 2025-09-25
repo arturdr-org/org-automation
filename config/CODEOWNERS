@@ -1,0 +1,46 @@
+# CODEOWNERS padrão para repositórios da organização arturdr-org
+# Este arquivo define quem são os proprietários de diferentes partes do código
+# e quem deve revisar mudanças específicas.
+#
+# Para mais informações sobre CODEOWNERS:
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Proprietários globais - serão solicitados para revisar tudo no repositório
+# (a menos que uma regra mais específica corresponda)
+* @arturdr-dev
+
+# Arquivos de configuração da organização
+/.github/ @arturdr-dev
+/.github/workflows/ @arturdr-dev
+/.github/ISSUE_TEMPLATE/ @arturdr-dev
+
+# Arquivos de documentação
+/README.md @arturdr-dev
+/CONTRIBUTING.md @arturdr-dev
+/LICENSE @arturdr-dev
+/docs/ @arturdr-dev
+*.md @arturdr-dev
+
+# Arquivos de configuração do projeto
+/package.json @arturdr-dev
+/requirements.txt @arturdr-dev
+/pyproject.toml @arturdr-dev
+/Cargo.toml @arturdr-dev
+/pom.xml @arturdr-dev
+/Dockerfile @arturdr-dev
+/docker-compose.yml @arturdr-dev
+
+# Scripts de automação
+/scripts/ @arturdr-dev
+*.sh @arturdr-dev
+*.py @arturdr-dev
+
+# Arquivos de CI/CD
+/.github/workflows/*.yml @arturdr-dev
+/.github/workflows/*.yaml @arturdr-dev
+
+# Configurações específicas por área (exemplos para projetos de foto)
+/src/raw/ @arturdr-dev
+/src/metadata/ @arturdr-dev
+/gimp/ @arturdr-dev
+/batch/ @arturdr-dev
