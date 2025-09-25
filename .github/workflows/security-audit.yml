@@ -38,7 +38,7 @@ jobs:
     
     steps:
     - name: "📥 Checkout Code"
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0  # Full history for secret scanning
     
@@ -75,7 +75,7 @@ jobs:
     
     steps:
     - name: "📥 Checkout Code"
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     
     - name: "🐍 Setup Python"
       uses: actions/setup-python@v4
@@ -135,7 +135,7 @@ jobs:
     
     steps:
     - name: "📥 Checkout Code"
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     
     - name: "🐍 Setup Python"
       uses: actions/setup-python@v4
@@ -189,7 +189,7 @@ jobs:
     
     steps:
     - name: "📥 Checkout Code"
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: "🏗️ Docker Security Scan"
       if: hashFiles('**/Dockerfile') != ''
@@ -230,7 +230,7 @@ jobs:
     
     steps:
     - name: "📥 Checkout Code"
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     
     - name: "📤 Download All Scan Results"
       uses: actions/download-artifact@v3

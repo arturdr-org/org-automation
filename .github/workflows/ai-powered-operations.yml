@@ -53,7 +53,7 @@ jobs:
       
     steps:
     - name: "📥 Checkout Code"
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     
     - name: "🔍 Validate Operation Request"
       id: validation
@@ -111,7 +111,7 @@ jobs:
     
     steps:
     - name: "📥 Checkout Code"
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     
     - name: "🐍 Setup Python"
       uses: actions/setup-python@v4
@@ -212,7 +212,7 @@ jobs:
     
     steps:
     - name: "📥 Checkout Code"
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     
     - name: "📧 Send Success Notification"
       if: needs.execute-ai-operation.outputs.success == 'true'
@@ -295,7 +295,7 @@ jobs:
     
     steps:
     - name: "📥 Checkout Code"
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     
     - name: "📚 Update Knowledge Base"
       run: |
