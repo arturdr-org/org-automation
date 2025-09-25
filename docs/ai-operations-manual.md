@@ -1,8 +1,8 @@
-# 🤖 Manual de Operações para IAs - org-automation-suite v3.0
+# 🤖 Manual de Operações para IAs - AI-powered-org-automation-suite v3.0
 
 ## 📋 Visão Geral
 
-Este manual fornece instruções estruturadas para que IAs possam operar autonomamente o sistema org-automation-suite. Todos os comandos são executáveis e seguem padrões específicos para interpretação automática.
+Este manual fornece instruções estruturadas para que IAs possam operar autonomamente o sistema AI-powered-org-automation-suite. Todos os comandos são executáveis e seguem padrões específicos para interpretação automática.
 
 ---
 
@@ -26,7 +26,7 @@ Este manual fornece instruções estruturadas para que IAs possam operar autonom
 ## 🔧 Comandos Básicos de Sistema
 
 ### COMANDO: Verificar Status do Sistema
-**Descrição:** Verificar saúde geral do sistema org-automation-suite
+**Descrição:** Verificar saúde geral do sistema AI-powered-org-automation-suite
 **Pré-requisitos:** Nenhum
 **Comando:**
 ```bash
@@ -163,7 +163,7 @@ for k, v in metrics.items():
 cd /home/arturdr/org-automation
 curl -H "Authorization: token $ORG_AUTOMATION_PAT" \
      -H "Accept: application/vnd.github+json" \
-     "https://api.github.com/repos/arturdr-org/org-automation-suite/actions/runs?per_page=5" | \
+     "https://api.github.com/repos/arturdr-org/AI-powered-AI-powered-org-automation-suite-suite/actions/runs?per_page=5" | \
      jq -r '.workflow_runs[] | "Status: \(.status) | \(.name) | \(.created_at)"'
 ```
 **Verificação:** Lista de execuções de workflows recentes
@@ -409,6 +409,6 @@ else:
 
 ---
 
-**🎯 Este manual é atualizado automaticamente e serve como fonte única de verdade para operação autônoma do org-automation-suite por IAs.**
+**🎯 Este manual é atualizado automaticamente e serve como fonte única de verdade para operação autônoma do AI-powered-org-automation-suite por IAs.**
 
 _Última atualização: ${new Date().toISOString()}_

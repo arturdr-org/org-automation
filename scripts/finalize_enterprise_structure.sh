@@ -13,11 +13,11 @@ echo "📚 Criando documentação técnica avançada..."
 
 # Criar architecture.md
 cat > docs/architecture.md << 'EOF'
-# 🏗️ Arquitetura do Sistema org-automation-suite
+# 🏗️ Arquitetura do Sistema AI-powered-org-automation-suite
 
 ## 📋 Visão Geral da Arquitetura
 
-O org-automation-suite é um sistema de automação baseado em IA colaborativa, projetado com arquitetura modular e escalável para gerenciamento inteligente de infraestrutura.
+O AI-powered-org-automation-suite é um sistema de automação baseado em IA colaborativa, projetado com arquitetura modular e escalável para gerenciamento inteligente de infraestrutura.
 
 ## 🎯 Princípios Arquiteturais
 
@@ -490,7 +490,7 @@ echo "✅ Documentação MCP criada"
 echo "👋 Criando guia de onboarding..."
 
 cat > docs/onboarding.md << 'EOF'
-# 👋 Guia de Onboarding - org-automation-suite
+# 👋 Guia de Onboarding - AI-powered-org-automation-suite
 
 ## 🎯 Bem-vindo ao Sistema AI-Powered!
 
@@ -500,7 +500,7 @@ Este guia irá ajudá-lo a começar rapidamente com o sistema de automação mai
 
 ### 1. **Clone e Setup**
 ```bash
-git clone https://github.com/arturdr-org/org-automation.git
+git clone https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite.git
 cd org-automation
 python3 -m venv .venv
 source .venv/bin/activate
@@ -678,7 +678,7 @@ python scripts/ai-manual-parser.py --command "Diagnóstico Completo"
 ```bash
 git clone https://github.com/[seu-usuario]/org-automation.git
 cd org-automation
-git remote add upstream https://github.com/arturdr-org/org-automation.git
+git remote add upstream https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite.git
 ```
 
 ### 2. **Desenvolvimento**
@@ -1323,7 +1323,7 @@ echo "✅ .gitignore expandido"
 echo "🤝 Criando guia de contribuição..."
 
 cat > CONTRIBUTING.md << 'EOF'
-# 🤝 Contributing to org-automation-suite
+# 🤝 Contributing to AI-powered-org-automation-suite
 
 Thank you for your interest in contributing to our AI-powered automation system! This guide will help you get started.
 

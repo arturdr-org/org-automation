@@ -1,0 +1,4 @@
+# MCP Automation Core Dependencies
+asyncio-extras>=1.3.2
+pathlib-extra>=1.0.0
+jsonschema>=4.17.0

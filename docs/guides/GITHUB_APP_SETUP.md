@@ -12,7 +12,7 @@ This repository supports authenticating to the GitHub API using a GitHub App (re
 1) Create the GitHub App (Org level)
 - Go to: Organization Settings > Developer settings > GitHub Apps > New GitHub App
 - App name: MCP Automation (or similar)
-- Homepage URL: https://github.com/arturdr-org/org-automation (or your site)
+- Homepage URL: https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite (or your site)
 - Webhook: not required for this workflow
 - Permissions (minimum for labels sync):
   - Repository permissions:
@@ -29,7 +29,7 @@ This repository supports authenticating to the GitHub API using a GitHub App (re
 - On the App page, click Install App > arturdr-org > Install (all repos or select repos)
 
 3) Add the secrets to this repo
-- In arturdr-org/org-automation > Settings > Secrets and variables > Actions > New repository secret:
+- In arturdr-org/AI-powered-AI-powered-org-automation-suite > Settings > Secrets and variables > Actions > New repository secret:
   - ORG_APP_ID: the numeric App ID
   - ORG_APP_PRIVATE_KEY: contents of the PEM file (include header/footer)
 - Optional (fallback): ORG_AUTOMATION_PAT for user PAT if needed

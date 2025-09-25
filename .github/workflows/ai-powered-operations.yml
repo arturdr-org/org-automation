@@ -269,7 +269,7 @@ jobs:
               "routing_key": "${{ secrets.PAGERDUTY_INTEGRATION_KEY }}",
               "event_action": "trigger",
               "payload": {
-                "summary": "AI Operation failure in org-automation-suite",
+                "summary": "AI Operation failure in AI-powered-org-automation-suite",
                 "severity": "warning",
                 "source": "${{ github.repository }}",
                 "component": "ai-operations",

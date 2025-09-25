@@ -1,0 +1,33 @@
+{
+  "name": "@arturdr-org/ai-powered-automation-suite",
+  "version": "1.0.0",
+  "description": "Enterprise-grade AI-powered automation suite for GitHub organizations",
+  "main": "index.js",
+  "scripts": {
+    "start": "python scripts/demo-ai-system.py",
+    "test": "python -m pytest tests/",
+    "health-check": "python scripts/ai-manual-parser.py --command 'Health Check' --dry-run"
+  },
+  "keywords": [
+    "ai",
+    "automation", 
+    "github",
+    "enterprise",
+    "claude",
+    "openai",
+    "gemini",
+    "mcp",
+    "devops",
+    "cicd"
+  ],
+  "author": "arturdr-org",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite.git"
+  },
+  "homepage": "https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite#readme",
+  "bugs": {
+    "url": "https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite/issues"
+  }
+}

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🏗️ MCP Repository Creator - org-automation-suite v3.0
+🏗️ MCP Repository Creator - AI-powered-org-automation-suite v3.0
 
 Script para criar e configurar repositórios MCP específicos:
 - k8s-argo: Pipelines Kubernetes com Argo Workflows
@@ -9,7 +9,7 @@ Script para criar e configurar repositórios MCP específicos:
 - nomad-orchestrator: Orquestração leve via HashiCorp Nomad
 
 Baseado nas melhores práticas de Multi-Cloud Platform (MCP)
-e integração com org-automation-suite-suite.
+e integração com AI-powered-org-automation-suite-suite.
 """
 
 import os
@@ -255,12 +255,12 @@ Este repositório contém {framework} workflows e configurações para automaç�
 
 ## 🏗️ Arquitetura
 
-### Integração com org-automation-suite-suite
+### Integração com AI-powered-org-automation-suite-suite
 
 Este repositório é parte da arquitetura modular MCP (Multi-Cloud Platform):
 
 ```
-org-automation-suite-suite/
+AI-powered-org-automation-suite-suite/
 ├── core/                    # Sistema central
 ├── modules/                 # Módulos específicos
 ├── common/                  # Recursos compartilhados
@@ -314,13 +314,13 @@ MIT License - veja [LICENSE](LICENSE) para detalhes.
 
 ## 🔗 Links Relacionados
 
-- [org-automation-suite-suite](https://github.com/{self.org_name}/org-automation-suite)
+- [AI-powered-org-automation-suite-suite](https://github.com/{self.org_name}/AI-powered-org-automation-suite)
 - [Documentação {framework}](#{framework.lower().replace(' ', '-')})
-- [Documentação da Arquitetura MCP](https://github.com/{self.org_name}/org-automation-suite/blob/main/docs/MCP_ARCHITECTURE.md)
+- [Documentação da Arquitetura MCP](https://github.com/{self.org_name}/AI-powered-org-automation-suite/blob/main/docs/MCP_ARCHITECTURE.md)
 
 ---
 
-**Parte da família org-automation-suite v3.0** 🚀
+**Parte da família AI-powered-org-automation-suite v3.0** 🚀
 """
     
     def _generate_dockerfile(self, language: str) -> str:
@@ -406,7 +406,7 @@ jobs:
         # Deploy específico
 
   notify:
-    name: "📢 Notify org-automation-suite-suite"
+    name: "📢 Notify AI-powered-org-automation-suite-suite"
     runs-on: ubuntu-latest
     needs: [test, deploy]
     if: always()
@@ -417,7 +417,7 @@ jobs:
         curl -X POST \\
           -H "Authorization: token ${{{{ secrets.GITHUB_TOKEN }}}}" \\
           -H "Accept: application/vnd.github+json" \\
-          "https://api.github.com/repos/{self.org_name}/org-automation-suite/dispatches" \\
+          "https://api.github.com/repos/{self.org_name}/AI-powered-org-automation-suite/dispatches" \\
           -d '{{"event_type": "mcp-update", "client_payload": {{"repo": "{repo_name}", "status": "${{{{ job.status }}}}"}}}}'
 """
     
@@ -426,7 +426,7 @@ jobs:
         return """apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: org-automation-suite-example-
+  generateName: AI-powered-org-automation-suite-example-
 spec:
   entrypoint: main
   templates:
@@ -441,7 +441,7 @@ spec:
     container:
       image: alpine:latest
       command: [sh, -c]
-      args: ["echo 'Validating org-automation-suite configuration...'"]
+      args: ["echo 'Validating AI-powered-org-automation-suite configuration...'"]
   
   - name: deploy-automation
     container:
@@ -453,7 +453,7 @@ spec:
     def _generate_n8n_config(self) -> str:
         """Gerar configuração exemplo para n8n."""
         return """{
-  "name": "org-automation-suite-example",
+  "name": "AI-powered-org-automation-suite-example",
   "nodes": [
     {
       "parameters": {},
@@ -465,7 +465,7 @@ spec:
     },
     {
       "parameters": {
-        "url": "https://api.github.com/repos/arturdr-org/org-automation-suite",
+        "url": "https://api.github.com/repos/arturdr-org/AI-powered-AI-powered-org-automation-suite-suite",
         "options": {}
       },
       "id": "github-node",
@@ -493,7 +493,7 @@ spec:
     def _generate_temporal_config(self) -> str:
         """Gerar configuração exemplo para Temporal."""
         return '''"""
-Exemplo de Workflow Temporal para org-automation-suite
+Exemplo de Workflow Temporal para AI-powered-org-automation-suite
 """
 
 import asyncio
@@ -557,7 +557,7 @@ async def generate_report(org_name: str) -> str:
     
     def _generate_nomad_config(self) -> str:
         """Gerar configuração exemplo para Nomad."""
-        return '''job "org-automation-suite" {
+        return '''job "AI-powered-org-automation-suite" {
   datacenters = ["dc1"]
   type = "batch"
 
@@ -587,7 +587,7 @@ import os
 import logging
 
 def main():
-    logging.info("🚀 Starting org-automation-suite via Nomad...")
+    logging.info("🚀 Starting AI-powered-org-automation-suite via Nomad...")
     
     # Implementar lógica de automação
     org_name = os.getenv("ORG_NAME", "arturdr-org")

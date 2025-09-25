@@ -1,8 +1,8 @@
-# 🏗️ Arquitetura do Sistema org-automation-suite
+# 🏗️ Arquitetura do Sistema AI-powered-org-automation-suite
 
 ## 📋 Visão Geral da Arquitetura
 
-O org-automation-suite é um sistema de automação baseado em IA colaborativa, projetado com arquitetura modular e escalável para gerenciamento inteligente de infraestrutura.
+O AI-powered-org-automation-suite é um sistema de automação baseado em IA colaborativa, projetado com arquitetura modular e escalável para gerenciamento inteligente de infraestrutura.
 
 ## 🎯 Princípios Arquiteturais
 

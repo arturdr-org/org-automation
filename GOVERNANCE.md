@@ -306,7 +306,7 @@ release/v1.2.0
 ## 📞 Suporte e Contato
 
 ### Issues de Governança
-- **Repositório**: arturdr-org/org-automation
+- **Repositório**: arturdr-org/AI-powered-AI-powered-org-automation-suite
 - **Labels**: governance, policy, automation
 - **Template**: Use template apropriado
 

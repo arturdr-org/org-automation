@@ -17,7 +17,7 @@ Este repositório contém o sistema central de automação da organização `art
 ### 📁 Estrutura do Projeto
 
 ```
-org-automation-suite/
+AI-powered-org-automation-suite/
 ├── 📁 config/                          # Configurações centralizadas
 │   ├── labels.yml                      # Definição de labels padrão
 │   ├── branch_protection.yml           # Regras de proteção de branches
@@ -105,8 +105,8 @@ branch_protection:
 
 ```bash
 # 1. Clonar e configurar ambiente
-git clone https://github.com/arturdr-org/org-automation-suite.git
-cd org-automation-suite
+git clone https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite-suite.git
+cd AI-powered-org-automation-suite
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt

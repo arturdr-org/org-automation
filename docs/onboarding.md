@@ -1,4 +1,4 @@
-# 👋 Guia de Onboarding - org-automation-suite
+# 👋 Guia de Onboarding - AI-powered-org-automation-suite
 
 ## 🎯 Bem-vindo ao Sistema AI-Powered!
 
@@ -8,7 +8,7 @@ Este guia irá ajudá-lo a começar rapidamente com o sistema de automação mai
 
 ### 1. **Clone e Setup**
 ```bash
-git clone https://github.com/arturdr-org/org-automation.git
+git clone https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite.git
 cd org-automation
 python3 -m venv .venv
 source .venv/bin/activate
@@ -186,7 +186,7 @@ python scripts/ai-manual-parser.py --command "Diagnóstico Completo"
 ```bash
 git clone https://github.com/[seu-usuario]/org-automation.git
 cd org-automation
-git remote add upstream https://github.com/arturdr-org/org-automation.git
+git remote add upstream https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite.git
 ```
 
 ### 2. **Desenvolvimento**

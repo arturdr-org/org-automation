@@ -1,5 +1,5 @@
 #!/bin/bash
-# 🏗️ Script para reorganizar estrutura do repositório org-automation-suite
+# 🏗️ Script para reorganizar estrutura do repositório AI-powered-org-automation-suite
 # Implementa as melhores práticas para projetos DevOps/automação
 
 echo "🚀 Iniciando reorganização da estrutura do repositório..."
@@ -201,14 +201,14 @@ echo "✅ .gitignore atualizado"
 echo "📖 Criando documentação da arquitetura..."
 
 cat > docs/architecture/REPOSITORY_STRUCTURE.md << 'EOF'
-# 🏗️ Estrutura do Repositório org-automation-suite
+# 🏗️ Estrutura do Repositório AI-powered-org-automation-suite
 
 Este documento descreve a organização e propósito de cada diretório no repositório.
 
 ## 📋 Estrutura Geral
 
 ```
-org-automation-suite/
+AI-powered-org-automation-suite/
 ├── 🧠 core/                     # Sistema central de automação
 ├── 🔧 modules/                  # Funcionalidades e integrações
 ├── 🤝 shared/                   # Recursos compartilhados

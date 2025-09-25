@@ -1,0 +1,36 @@
+# Labels padrão para a organização
+# Você pode ajustar nomes, cores (hex sem #) e descrições.
+labels:
+  - name: bug
+    color: d73a4a
+    description: Problema ou comportamento incorreto
+  - name: enhancement
+    color: a2eeef
+    description: Solicitação de melhoria
+  - name: chore
+    color: cfd3d7
+    description: Tarefa de manutenção/infra
+  - name: documentation
+    color: 0075ca
+    description: Melhorias de docs
+  - name: security
+    color: ee0701
+    description: Itens relacionados à segurança
+  - name: help wanted
+    color: 008672
+    description: Ajuda bem-vinda
+  - name: good first issue
+    color: 7057ff
+    description: Bom ponto de partida para novos contribuidores
+  - name: wontfix
+    color: ffffff
+    description: Não será corrigido
+  - name: duplicate
+    color: cfd3d7
+    description: Duplicado de outra issue
+  - name: invalid
+    color: e4e669
+    description: Inválido ou fora do escopo
+  - name: mcp-managed-test
+    color: 5319e7
+    description: Label de teste gerenciada pelo MCP

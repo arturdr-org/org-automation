@@ -90,7 +90,7 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       with:
         args: >
-          -Dsonar.projectKey=arturdr-org_org-automation-suite
+          -Dsonar.projectKey=arturdr-org_AI-powered-org-automation-suite
           -Dsonar.organization=arturdr-org
           -Dsonar.python.coverage.reportPaths=coverage.xml
           -Dsonar.python.xunit.reportPath=pytest.xml
@@ -101,7 +101,7 @@ jobs:
       with:
         file: ./coverage.xml
         flags: unittests
-        name: org-automation-suite-coverage
+        name: AI-powered-org-automation-suite-coverage
         fail_ci_if_error: false
         
     - name: "💾 Upload Test Results"
@@ -270,6 +270,6 @@ jobs:
         echo "| Deploy | ${{ needs.deploy.result == 'success' && '✅ Deployed' || needs.deploy.result == 'skipped' && '⏭️ Skipped' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### 📈 Quality Metrics" >> $GITHUB_STEP_SUMMARY
-        echo "- **SonarCloud**: [View Report](https://sonarcloud.io/project/overview?id=arturdr-org_org-automation-suite)" >> $GITHUB_STEP_SUMMARY
-        echo "- **Codecov**: [View Coverage](https://codecov.io/gh/arturdr-org/org-automation-suite)" >> $GITHUB_STEP_SUMMARY
+        echo "- **SonarCloud**: [View Report](https://sonarcloud.io/project/overview?id=arturdr-org_AI-powered-org-automation-suite)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Codecov**: [View Coverage](https://codecov.io/gh/arturdr-org/AI-powered-AI-powered-org-automation-suite-suite)" >> $GITHUB_STEP_SUMMARY
         echo "- **Snyk**: Security vulnerabilities checked" >> $GITHUB_STEP_SUMMARY

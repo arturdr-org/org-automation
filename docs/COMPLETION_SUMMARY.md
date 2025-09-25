@@ -22,7 +22,7 @@ Criamos um **sistema completo de automação organizacional** que cobre **100% d
 ## 🏗️ Arquitetura Implementada
 
 ```
-arturdr-org/org-automation-suite/
+arturdr-org/AI-powered-AI-powered-org-automation-suite-suite/
 ├── 🎯 AUTOMAÇÃO PRINCIPAL
 │   ├── enhanced_automation.py      # Sistema principal (532 linhas)
 │   ├── monitoring.py              # Health checks (447 linhas)  

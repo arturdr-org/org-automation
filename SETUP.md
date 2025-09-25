@@ -6,8 +6,8 @@
 
 ```bash
 # 1. Clone and setup environment
-git clone https://github.com/arturdr-org/org-automation.git
-cd org-automation
+git clone https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite.git
+cd AI-powered-AI-powered-org-automation-suite
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -59,8 +59,8 @@ Enterprise Components:
 
 ```bash
 # Clone the enterprise repository
-git clone https://github.com/arturdr-org/org-automation.git
-cd org-automation
+git clone https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite.git
+cd AI-powered-AI-powered-org-automation-suite
 
 # Verify enterprise structure
 ls -la  # Should see only 9 essential files in root
@@ -118,8 +118,8 @@ python scripts/ai-integration-hub.py list providers
 
 2. **Configure App**:
    ```
-   Name: ai-automation-arturdr-org
-   Homepage: https://github.com/arturdr-org/org-automation
+Name: ai-automation-arturdr-org
+   Homepage: https://github.com/arturdr-org/AI-powered-AI-powered-org-automation-suite
    Webhook: Disabled
    ```
 

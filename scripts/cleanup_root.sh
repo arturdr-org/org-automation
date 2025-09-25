@@ -229,7 +229,7 @@ echo ""
 echo "🎯 ESTRUTURA IDEAL DA RAIZ:"
 echo "=========================="
 cat << 'EOF'
-org-automation-suite/
+AI-powered-org-automation-suite/
 ├── 📄 README.md              # Documentação principal
 ├── 🤝 CONTRIBUTING.md        # Guia de contribuição
 ├── 📋 GOVERNANCE.md          # Governança do projeto

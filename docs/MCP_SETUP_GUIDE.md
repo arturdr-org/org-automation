@@ -1,4 +1,4 @@
-# 🚀 Guia de Configuração MCP - org-automation-suite v3.0
+# 🚀 Guia de Configuração MCP - AI-powered-org-automation-suite v3.0
 
 ## 📋 Pré-requisitos
 
@@ -17,7 +17,7 @@ Acesse [GitHub Settings → Tokens](https://github.com/settings/tokens) e crie u
 
 #### ⚙️ **Configurações Recomendadas:**
 - **Expiration**: 90 days (para segurança)
-- **Note**: "org-automation-suite MCP creation - [DATA]"
+- **Note**: "AI-powered-org-automation-suite MCP creation - [DATA]"
 
 ---
 
@@ -58,7 +58,7 @@ echo "ORG_AUTOMATION_PAT=ghp_seu_token_aqui" > .env
 Para ver como funcionará sem precisar de token:
 
 ```bash
-cd /home/arturdr/org-automation-suite
+cd /home/arturdr/AI-powered-org-automation-suite
 python scripts/demo_mcp_creation.py
 ```
 
@@ -67,7 +67,7 @@ python scripts/demo_mcp_creation.py
 Após configurar o token:
 
 ```bash
-cd /home/arturdr/org-automation-suite
+cd /home/arturdr/AI-powered-org-automation-suite
 python scripts/create_mcp_repos.py
 ```
 
@@ -261,7 +261,7 @@ Após execução bem-sucedida:
 ```bash
 # Setup completo
 export ORG_AUTOMATION_PAT='seu_token_aqui'
-cd /home/arturdr/org-automation-suite
+cd /home/arturdr/AI-powered-org-automation-suite
 python scripts/create_mcp_repos.py
 
 # Verificação

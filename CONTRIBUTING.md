@@ -1,4 +1,4 @@
-# 🤝 Contributing to org-automation-suite
+# 🤝 Contributing to AI-powered-org-automation-suite
 
 Thank you for your interest in contributing to our AI-powered automation system! This guide will help you get started.
 
