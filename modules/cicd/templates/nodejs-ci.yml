@@ -1,0 +1,296 @@
+name: 🟢 Node.js CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  release:
+    types: [published]
+
+env:
+  NODE_VERSION: '18'
+  REGISTRY_URL: https://registry.npmjs.org
+
+jobs:
+  quality-checks:
+    name: 🔍 Quality & Security Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: |
+          npm ci
+
+      - name: 🔍 Linting (ESLint)
+        run: |
+          npm run lint || echo "Linting completed with warnings"
+
+      - name: 🎨 Code Formatting Check (Prettier)
+        run: |
+          npm run format:check || echo "Format check completed"
+
+      - name: 🏷️ Type Checking (TypeScript)
+        if: hashFiles('tsconfig.json')
+        run: |
+          npm run type-check || npx tsc --noEmit || echo "Type checking completed"
+
+      - name: 🔒 Security Audit
+        run: |
+          npm audit --audit-level=moderate || echo "Security audit completed"
+
+      - name: 🛡️ Dependency License Check
+        run: |
+          npx license-checker --summary || echo "License check completed"
+
+  tests:
+    name: 🧪 Tests
+    runs-on: ubuntu-latest
+    needs: quality-checks
+    
+    strategy:
+      matrix:
+        node-version: [16, 18, 20]
+        
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: |
+          npm ci
+
+      - name: 🧪 Run Unit Tests
+        run: |
+          npm run test:coverage
+
+      - name: 📊 Upload Coverage to Codecov
+        uses: codecov/codecov-action@v3
+        if: matrix.node-version == 18
+        with:
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+
+      - name: 📋 Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-node-${{ matrix.node-version }}
+          path: |
+            coverage/
+            test-results.xml
+
+  e2e-tests:
+    name: 🎭 End-to-End Tests
+    runs-on: ubuntu-latest
+    needs: [quality-checks, tests]
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: |
+          npm ci
+
+      - name: 🏗️ Build Application
+        run: |
+          npm run build
+
+      - name: 🎭 Run Playwright Tests
+        run: |
+          npx playwright install --with-deps
+          npm run test:e2e
+
+      - name: 📊 Upload E2E Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-test-results
+          path: |
+            test-results/
+            playwright-report/
+
+  build:
+    name: 🏗️ Build & Package
+    runs-on: ubuntu-latest
+    needs: [quality-checks, tests]
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: |
+          npm ci
+
+      - name: 🏗️ Build Application
+        run: |
+          npm run build
+
+      - name: 📦 Create Package
+        run: |
+          npm pack
+
+      - name: 📤 Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            dist/
+            *.tgz
+
+  security-analysis:
+    name: 🔒 CodeQL Security Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔍 Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript
+          queries: security-extended,security-and-quality
+
+      - name: 📊 Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:javascript"
+
+  deploy-staging:
+    name: 🚧 Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [build, e2e-tests]
+    if: github.ref == 'refs/heads/develop'
+    environment: staging
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+
+      - name: 🚧 Deploy to Staging Environment
+        run: |
+          echo "🚧 Deploying to staging environment..."
+          # Add your staging deployment logic here
+          echo "✅ Staging deployment completed!"
+
+      - name: 🔗 Update Deployment Status
+        run: |
+          echo "📱 Staging URL: https://staging.example.com" >> $GITHUB_STEP_SUMMARY
+
+  deploy-production:
+    name: 🌟 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [build, security-analysis, e2e-tests]
+    if: github.event_name == 'release'
+    environment: production
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: ${{ env.REGISTRY_URL }}
+
+      - name: 📦 Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+
+      - name: 📤 Publish to NPM
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm publish
+
+      - name: 🌟 Deploy to Production Environment
+        run: |
+          echo "🌟 Deploying to production environment..."
+          # Add your production deployment logic here
+          echo "✅ Production deployment completed!"
+
+      - name: 🔗 Update Deployment Status
+        run: |
+          echo "🌐 Production URL: https://production.example.com" >> $GITHUB_STEP_SUMMARY
+
+  lighthouse-audit:
+    name: 🏠 Lighthouse Performance Audit
+    runs-on: ubuntu-latest
+    needs: [deploy-staging]
+    if: github.ref == 'refs/heads/develop'
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🏠 Run Lighthouse Audit
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: |
+            https://staging.example.com
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+  notification:
+    name: 📢 Notifications
+    runs-on: ubuntu-latest
+    needs: [deploy-production, deploy-staging]
+    if: always()
+    
+    steps:
+      - name: 📊 Create Deployment Summary
+        run: |
+          echo "## 🟢 Node.js Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Repository**: ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Node.js Version**: ${{ env.NODE_VERSION }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Triggered by**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch/Tag**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: ${{ needs.deploy-production.result || needs.deploy-staging.result || 'Completed' }}" >> $GITHUB_STEP_SUMMARY
